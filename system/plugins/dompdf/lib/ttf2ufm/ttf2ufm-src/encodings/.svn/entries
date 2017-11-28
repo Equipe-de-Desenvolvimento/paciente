@@ -1,0 +1,120 @@
+10
+
+dir
+643
+https://aph-ijf.googlecode.com/svn/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/encodings
+https://aph-ijf.googlecode.com/svn
+
+
+
+2010-12-28T18:42:01.670689Z
+382
+laioviana@gmail.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+a16deda9-9f93-ccd2-60e7-7d0f8b984143
+
+README
+file
+
+
+
+
+2011-09-11T05:13:41.000000Z
+d0ccc5d569cc81a1198839cbf5cd56f3
+2010-12-28T18:42:01.670689Z
+382
+laioviana@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1787
+
+README.html
+file
+
+
+
+
+2011-09-11T05:13:40.000000Z
+81bca04962d31b4d35f9c0c1af2ab359
+2010-12-28T18:42:01.670689Z
+382
+laioviana@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2090
+
+adobestd
+dir
+
+bulgarian
+dir
+
+cyrillic
+dir
+
+latin1
+dir
+
+latin2
+dir
+
+latin4
+dir
+
+latin5
+dir
+
+russian
+dir
+
