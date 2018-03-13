@@ -273,6 +273,17 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/laudodigitador-form_1', $data);
     }
 
+    
+    function listararquivos($ambulatorio_laudo_id) {
+        $this->load->helper('directory');
+        $data['arquivo_pasta_pdf'] = directory_map("/home/sisprod/projetos/clinicas/upload/consulta/$ambulatorio_laudo_id/");
+        if ($data['arquivo_pasta_pdf'] != false) {
+            sort($data['arquivo_pasta_pdf']);
+        }
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->loadView('ambulatorio/listararquivos-form', $data);
+    }
+    
     function todoslaudo($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $guia_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;

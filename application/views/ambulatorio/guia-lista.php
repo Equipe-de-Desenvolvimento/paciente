@@ -7,7 +7,7 @@
     <div>
         <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentos" method="post">
             <fieldset>
-                <legend>Dados do Pacienete</legend>
+                <legend>Dados do Paciente</legend>
                 <div>
                     <label>Nome</label>                      
                     <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
@@ -69,7 +69,6 @@
                         foreach ($exames as $item) :
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             if ($test->ambulatorio_guia_id == $item->guia_id) {
-                                
                                 ?>
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->procedimento ?></td>
@@ -84,8 +83,15 @@
                                             Laudo</a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoimagem/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
-                                            Imagem</a></div>
+                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoimagem/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
+                                        Imagem</a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="70px;">
+                                    <div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/listararquivos/" . $item->ambulatorio_laudo_id; ?> ', '_blank', 'width=800,height=600');">
+                                            Arquivos
+                                        </a>
+                                    </div>
                                 </td>
                                 <?
                                 }
