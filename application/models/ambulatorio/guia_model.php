@@ -184,7 +184,6 @@ class guia_model extends Model {
             $this->db->orderby('p.nome');
             $this->db->orderby('ae.guia_id');
             $this->db->orderby('ae.data');
-            
         }
         $return = $this->db->get();
         return $return->result();
@@ -3770,8 +3769,8 @@ ORDER BY ae.agenda_exames_id)";
         $return = $this->db->get();
         return $return->result();
     }
-    
-        function listarempresapermissoes($empresa_id = null) {
+
+    function listarempresapermissoes($empresa_id = null) {
         if ($empresa_id == null) {
             $empresa_id = $this->session->userdata('empresa_id');
         }
