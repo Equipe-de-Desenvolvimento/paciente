@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps
+END
+adobe-standard-encoding.map
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/adobe-standard-encoding.map
+END
+T2A_compact.map
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/T2A_compact.map
+END
+cubig5.map
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/cubig5.map
+END
+cubg5plus.map
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/cubg5plus.map
+END
+CP1250.map
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/CP1250.map
+END
+unicode-sample.map
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/unicode-sample.map
+END
+CP1251.map
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/CP1251.map
+END
+ubig5.map
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/ubig5.map
+END
+ugbk.map
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/ugbk.map
+END
+cugb.map
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/cugb.map
+END
+cugbk.map
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/cugbk.map
+END
+ugb.map
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/maps/ugb.map
+END

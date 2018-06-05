@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/encodings/cyrillic
+END
+iso8859-5.tbl
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/encodings/cyrillic/iso8859-5.tbl
+END
+encodings.alias
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/encodings/cyrillic/encodings.alias
+END
+ibm-1251.tbl
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/encodings/cyrillic/ibm-1251.tbl
+END
+koi8-r.tbl
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/encodings/cyrillic/koi8-r.tbl
+END
+ibm-866.tbl
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/!svn/ver/382/trunk/system/plugins/dompdf/lib/ttf2ufm/ttf2ufm-src/encodings/cyrillic/ibm-866.tbl
+END
