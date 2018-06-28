@@ -282,7 +282,7 @@ class Laudo extends BaseController {
         } else {
             $caminho_arquivos = "/home/sisprod/projetos/clinica/upload/consulta/$ambulatorio_laudo_id/";
         }
-        $data['arquivo_pasta_pdf'] = directory_map("/home/sisprod/projetos/clinicas/upload/consulta/$ambulatorio_laudo_id/");
+        $data['arquivo_pasta_pdf'] = directory_map($caminho_arquivos);
         if ($data['arquivo_pasta_pdf'] != false) {
             sort($data['arquivo_pasta_pdf']);
         }

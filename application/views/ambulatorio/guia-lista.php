@@ -78,10 +78,12 @@
                                     <?
                                     if ($item->situacao == "FINALIZADO") {
                                         ?>
-                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
-                                                    Laudo</a></div>
-                                        </td>
+                                        <? if (@$empresa[0]->botao_laudo_paciente == 't') { ?>
+                                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
+                                                        Laudo</a></div>
+                                            </td>
+                                        <? } ?>
                                         <? if (@$empresa[0]->botao_imagem_paciente == 't') { ?>
                                             <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoimagem/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
