@@ -336,13 +336,26 @@ class Laudo extends BaseController {
     }
 
     function impressaolaudo($ambulatorio_laudo_id, $exame_id) {
-
-
+ 
         $this->load->plugin('mpdf');
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-
+        $texto = $data['laudo'][0]->texto;
+//        $adendo = $data['laudo'][0]->adendo;
+        $data['laudo'][0]->texto = $texto;
+        $data['laudo'][0]->texto = str_replace("<!-- pagebreak -->", '<pagebreak>', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace("<head>", '', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace("</head>", '', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace("<html>", '', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace("<body>", '', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace("</html>", '', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace("</body>", '', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace('align="center"', '', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace('align="left"', '', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace('align="right"', '', $data['laudo'][0]->texto);
+        $data['laudo'][0]->texto = str_replace('align="justify"', '', $data['laudo'][0]->texto);
+     
         $dataFuturo = date("Y-m-d");
         $dataAtual = $data['laudo']['0']->nascimento;
         $date_time = new DateTime($dataAtual);
