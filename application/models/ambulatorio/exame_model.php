@@ -599,7 +599,8 @@ class exame_model extends Model {
                             c.nome as convenio,
                             pt.codigo,
                             co.nome as convenio_paciente,
-                            al.situacao as situacaolaudo');
+                            al.situacao as situacaolaudo,
+                            al.ambulatorio_laudo_id');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -2538,6 +2539,24 @@ ORDER BY ae.agenda_exames_id)";
         } else {
             $this->_agenda_exames_id = null;
         }
+    }
+    
+    
+    function listarenderecoexterno(){
+        
+          $this->db->select('endereco_upload');
+        $this->db->from('tb_empresa e'); 
+        $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+        $this->db->where('e.ativo','t');
+        $this->db->orderby('e.empresa_id');  
+        $return = $this->db->get()->result();
+        
+        foreach($return as $item){ 
+            if ($item->endereco_upload != "") {
+                return $item->endereco_upload;
+            } 
+        } 
+        
     }
 
 }

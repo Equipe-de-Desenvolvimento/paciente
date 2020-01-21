@@ -1234,6 +1234,25 @@ class Laudo extends BaseController {
         $this->load->view('footer');
     }
 
+    
+    function imagens($ambulatorio_laudo_id){
+        $this->load->helper('directory');
+        
+        $endereco_externo = $this->exame->listarenderecoexterno();
+        $data['endereco_externo'] = $endereco_externo;
+        $data['arquivo_pasta'] = directory_map("$endereco_externo/consulta/$ambulatorio_laudo_id/");
+        
+        
+        if ($data['arquivo_pasta'] != false) {
+            sort($data['arquivo_pasta']);
+        }   
+        
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->loadView('ambulatorio/imagemconsulta', $data);
+        
+       
+    }
+    
 }
 
 /* End of file welcome.php */

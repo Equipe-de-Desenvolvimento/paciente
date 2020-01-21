@@ -193,7 +193,19 @@
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $telefone; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
-
+                             <?php  
+                                if ($item->ambulatorio_laudo_id != "") {  
+                                        ?>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                            <a target="_blank" href="<?= base_url() ?>ambulatorio/laudo/imagens/<?= $item->ambulatorio_laudo_id ?>">Arquivos
+                                            </a></div>
+                                </td> 
+                              <?php  }else{
+                                  ?>
+                                  <td class="<?php echo $estilo_linha; ?>" width="60px;"> </td>
+                                <?
+                                }
+                                 ?>
                                 <?
                                 if ($item->paciente_id == "") {
                                     ?>
@@ -205,7 +217,7 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"> </td>
                                 <? }
                                 ?>
-
+                               
                             </tr>
 
                         </tbody>
