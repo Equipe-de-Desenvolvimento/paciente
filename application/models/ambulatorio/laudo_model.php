@@ -467,6 +467,40 @@ class laudo_model extends Model {
         
     }
 
+    function listarempresaenderecouploadpasta() {
+
+        $this->db->select(' empresa_id,
+                            endereco_upload_pasta');
+        $this->db->from('tb_empresa');
+        $this->db->where('ativo', 't');
+        $this->db->orderby('empresa_id');
+        $return = $this->db->get()->result();
+        return $return[0]->endereco_upload_pasta;
+        
+    }
+
+    function listaobservacaopaciente($ambulatorio_laudo_id) {
+
+        $this->db->select('observacao_paciente');
+        $this->db->from('tb_ambulatorio_laudo');
+        $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);
+        $return = $this->db->get()->result();
+        return $return;
+        
+    }
+
+    function gravarobservacao($ambulatorio_laudo_id) {
+
+        $this->db->set('observacao_paciente', $_POST['observacao_arquivo']);
+        $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);
+        $this->db->update('tb_ambulatorio_laudo');
+
+        return 1;
+        
+    }
+
+
+
     function listarexamehistorico($paciente_id) {
 
         $empresa_id = $this->session->userdata('empresa_id');

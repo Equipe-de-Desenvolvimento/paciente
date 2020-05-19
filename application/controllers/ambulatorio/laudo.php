@@ -282,12 +282,79 @@ class Laudo extends BaseController {
         } else {
             $caminho_arquivos = "/home/sisprod/projetos/clinica/upload/consulta/$ambulatorio_laudo_id/";
         }
+
+        $empresa_upload_pasta = $this->laudo->listarempresaenderecouploadpasta();
+//        var_dump($empresa_upload); die;
+        if ($empresa_upload_pasta != '') {
+            $pasta_sistema = $empresa_upload_pasta;
+        } else {
+            $pasta_sistema = "clinica";
+        }
+
+        $data['pasta_sistema'] = $pasta_sistema;
+
+
+
         $data['arquivo_pasta_pdf'] = directory_map($caminho_arquivos);
         if ($data['arquivo_pasta_pdf'] != false) {
             sort($data['arquivo_pasta_pdf']);
         }
+
+        $data['observacao'] = $this->laudo->listaobservacaopaciente($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->loadView('ambulatorio/listararquivos-form', $data);
+    }
+
+        function importararquivospaciente() {
+
+        $empresa_upload = $this->laudo->listarempresaenderecoupload();
+//        var_dump($empresa_upload); die;
+        if ($empresa_upload != '') {
+            $caminho_arquivos = "$empresa_upload";
+        } else {
+            $caminho_arquivos = "/home/sisprod/projetos/clinica/upload";
+        }
+
+
+        $ambulatorio_laudo_id = $_POST['paciente_id'];
+
+        for ($i = 0; $i < count($_FILES['arquivos']['name']); $i++) {
+            $_FILES['userfile']['name'] = $_FILES['arquivos']['name'][$i];
+            $_FILES['userfile']['type'] = $_FILES['arquivos']['type'][$i];
+            $_FILES['userfile']['tmp_name'] = $_FILES['arquivos']['tmp_name'][$i];
+            $_FILES['userfile']['error'] = $_FILES['arquivos']['error'][$i];
+            $_FILES['userfile']['size'] = $_FILES['arquivos']['size'][$i];
+
+            if (!is_dir("$caminho_arquivos/consulta/$ambulatorio_laudo_id")) {
+                mkdir("$caminho_arquivos/consulta/$ambulatorio_laudo_id");
+                $destino = "$caminho_arquivos/consulta/$ambulatorio_laudo_id";
+                chmod($destino, 0777);
+            }
+            
+
+            //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
+            $config['upload_path'] = "$caminho_arquivos/consulta/" . $ambulatorio_laudo_id . "/";
+            $config['allowed_types'] = 'gif|jpg|BMP|bmp|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar|xml|txt|';
+            $config['max_size'] = '0';
+            $config['overwrite'] = FALSE;
+            $config['encrypt_name'] = FALSE;
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) {
+                $error = array('error' => $this->upload->display_errors());
+            } else {
+                $error = null;
+                $data = array('upload_data' => $this->upload->data());
+            }
+        }
+//        var_dump($error); die;
+
+
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+
+        $observacao = $this->laudo->gravarobservacao($ambulatorio_laudo_id);
+
+        $this->listararquivos($ambulatorio_laudo_id);
     }
 
     function todoslaudo($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $guia_id, $messagem = null) {

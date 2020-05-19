@@ -91,6 +91,13 @@
                                             </td>  
 
                                         <? } ?>
+    
+
+
+
+                                        <?
+                                    }
+                                    ?>
                                         <? if (@$empresa[0]->botao_arquivos_paciente == 't') { ?>
 
                                             <td class="<?php echo $estilo_linha; ?>" width="70px;">
@@ -101,12 +108,6 @@
                                                 </div>
                                             </td>  
                                         <? } ?>
-
-
-
-                                        <?
-                                    }
-                                    ?>
                                 </tr>
 
                             </tbody>
