@@ -291,7 +291,17 @@ class Laudo extends BaseController {
             $pasta_sistema = "clinica";
         }
 
+        $empresa_upload_pasta_paciente = $this->laudo->listarempresaenderecouploadpastapaciente();
+//        var_dump($empresa_upload); die;
+        if ($empresa_upload_pasta_paciente != '') {
+            $pasta_sistema_paciente = $empresa_upload_pasta_paciente;
+        } else {
+            $pasta_sistema_paciente = "paciente";
+        }
+
         $data['pasta_sistema'] = $pasta_sistema;
+
+        $data['pasta_sistema_paciente'] = $pasta_sistema_paciente;
 
 
 

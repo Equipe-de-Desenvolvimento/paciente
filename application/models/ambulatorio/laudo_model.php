@@ -479,6 +479,18 @@ class laudo_model extends Model {
         
     }
 
+    function listarempresaenderecouploadpastapaciente() {
+
+        $this->db->select(' empresa_id,
+                            endereco_upload_pasta_paciente');
+        $this->db->from('tb_empresa');
+        $this->db->where('ativo', 't');
+        $this->db->orderby('empresa_id');
+        $return = $this->db->get()->result();
+        return $return[0]->endereco_upload_pasta_paciente;
+        
+    }
+
     function listaobservacaopaciente($ambulatorio_laudo_id) {
 
         $this->db->select('observacao_paciente');
