@@ -3770,12 +3770,118 @@ ORDER BY ae.agenda_exames_id)";
         return $return->result();
     }
 
+    function listarexamesguialaboratorio($guia_id) {
+
+        $this->db->select('ae.agenda_exames_id,
+                            pt.procedimento_tuss_id,
+                            ae.json_integracao_lab,
+                            ae.data,
+                            ae.mensagem_integracao_lab,
+                            ae.operador_autorizacao,
+                            op.nome as operador,
+                            ae.guia_id,
+                            ae.paciente_id,
+                            ae.data_autorizacao,
+                            p.nome as paciente,
+                            c.nome as convenio,
+                            p.sexo,
+                            p.nascimento,
+                            p.cpf,
+                            p.rg,
+                            o.nome as medicosolicitante,
+                            o.uf_profissional,
+                            sig.nome as sigla_conselho,
+                            o.conselho as crm_solicitante,
+                            ae.indicacao as promotor2,
+                            pt.grupo,
+                            pc.convenio_id,
+                            pt.codigo,
+                            ope.conselho,
+                            m.estado,
+                            m.codigo_ibge,
+                            ag.tipo ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_guia ge', 'ge.ambulatorio_guia_id = ae.guia_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'pt.grupo = ag.nome', 'left');
+        $this->db->join('tb_empresa ep', 'ep.empresa_id = ae.empresa_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_sigla sig', 'sig.sigla_id = o.sigla_id', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = o.municipio_id', 'left');
+        $this->db->join('tb_operador ope', 'ope.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->where("ae.guia_id", $guia_id);
+        $this->db->where("pt.grupo", 'LABORATORIAL');
+        //$this->db->where("ae.mensagem_integracao_lab !=", 'IMPORTADO');
+        $this->db->where("ae.cancelada", "f");
+        $this->db->orderby('ae.agenda_exames_id');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+
+    function listarexameguiaprocedimentosmodelo2($guia_id) {
+
+        $this->db->select('sum((ae.valor * ae.quantidade)) as valor_total, 
+                           array_agg(ae.agenda_exames_id) as array_exames,
+                           array_agg(ae.valor * ae.quantidade) as array_valores,
+                           paciente_id
+    
+                        ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        // $this->db->where('faturado', 'f');
+        $this->db->where('confirmado', 't');
+        $this->db->where('c.dinheiro', 't');
+        $this->db->where("guia_id", $guia_id);
+        $this->db->groupby("guia_id, paciente_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function agendaExamesFormasPagamentoGuiaTotalLab($guia_id) {
+        //        var_dum
+                // Dentro do select tem um pequeno select interno que faz a contagem pra saber quanto ainda resta a pagar
+                // Desse procedimento
+                $this->db->select('
+                                    aef.guia_id,
+                                    sum(aef.valor_total) as valor_total,
+                                    array_agg(aef.valor_total),
+                                    (sum(aef.valor_total) - (select sum(valor_bruto) + sum(desconto)  as valorTotPag from ponto.tb_agenda_exames_faturar aef2
+                                    where aef2.guia_id = aef.guia_id and ativo = true)) as valor_restante,
+                                    sum(aef.valor) as valor,
+                                    sum(valor_bruto) + sum(desconto) as valor_total_pago,
+                                    
+                                    sum(aef.desconto) as desconto', false);
+                $this->db->from('tb_agenda_exames_faturar aef');
+                $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = aef.forma_pagamento_id', 'left');
+                $this->db->where('aef.guia_id', $guia_id);
+                $this->db->where('aef.ativo', 't');
+                $this->db->groupby('
+                                    aef.guia_id,
+                                    
+                                    ');
+                // $this->db->orderby('');
+                $return = $this->db->get();
+                $retorno = $return->result();
+                return $retorno;
+            }
+
     function listarempresapermissoes($empresa_id = null) {
         if ($empresa_id == null) {
             $empresa_id = $this->session->userdata('empresa_id');
         }
 
-        $this->db->select('ep.*');
+        $this->db->select('ep.*, e.*');
         $this->db->from('tb_empresa e');
 //        $this->db->where('e.empresa_id', 1);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
@@ -3794,21 +3900,58 @@ ORDER BY ae.agenda_exames_id)";
         return $return->result();
     }
 
-    function listarempresa($empresa_id) {
+    function listarempresa($empresa_id = null) {
+        if ($empresa_id == null) {
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
 
-        $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('razao_social,
-                            logradouro,
-                            numero,
-                            nome,
-                            telefone,
-                            celular,
-                            bairro');
-        $this->db->from('tb_empresa');
-        $this->db->where('empresa_id', $empresa_id);
-        $this->db->orderby('empresa_id');
+        $this->db->select('e.empresa_id,
+                            e.razao_social,
+                            e.logradouro,
+                            e.numero,
+                            e.nome,
+                            e.telefone,
+                            e.email,
+                            e.cnes,
+                            e.horario_sab,
+                            e.horario_seg_sex,
+                            e.producaomedicadinheiro,
+                            e.impressao_declaracao,
+                            e.impressao_orcamento,
+                            e.impressao_internacao,
+                            e.data_contaspagar,
+                            e.medico_laudodigitador,
+                            e.impressao_laudo,
+                            e.chamar_consulta,
+                            e.impressao_recibo,
+                            e.cabecalho_config,
+                            e.rodape_config,
+                            e.laudo_config,
+                            e.recibo_config,
+                            e.ficha_config,
+                            e.declaracao_config,
+                            e.atestado_config,
+                            e.celular,
+                            e.bairro,
+                            e.endereco_integracao_lab,
+                            e.endereco_externo_base,
+                            e.identificador_lis,
+                            e.origem_lis,
+                            
+                            m.nome as municipio,
+                            m.estado,
+                            e.impressao_tipo, 
+                            e.site_empresa,
+                            e.cnpj,
+                            e.internacao');
+        $this->db->from('tb_empresa e');
+        $this->db->join('tb_municipio m', 'm.municipio_id = e.municipio_id', 'left');
+        $this->db->where('e.empresa_id', $empresa_id);
+
+        $this->db->orderby('e.empresa_id');
         $return = $this->db->get();
         return $return->result();
+    
     }
 
     function gravarguia($paciente_id) {

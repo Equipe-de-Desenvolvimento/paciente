@@ -41,6 +41,188 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/guia-lista', $data);
     }
 
+    function resultadoExamesLabLuz($guia_id, $paciente_id) {
+        $empresa = $this->guia->listarempresa();
+        $empresaP = $this->guia->listarempresapermissoes();
+        $exames_procedimentos = $this->guia->listarexamesguialaboratorio($guia_id);
+        // var_dump($exames_procedimentos);
+        // die;
+        // if (count($exames_procedimentos) > 0) {
+        // Caso não esteja faturado por completo
+        // 
+        $valorSomadoProc = $this->guia->listarexameguiaprocedimentosmodelo2($guia_id);
+        $valor_total = @$valorSomadoProc[0]->valor_total;
+        $valor_metade = (float) $valor_total / 2;
+        $valor_pago = 0;
+        $forma_cadastradaTotal = $this->guia->agendaExamesFormasPagamentoGuiaTotalLab($guia_id);
+        if (count($forma_cadastradaTotal) > 0) {
+            $valor_pago = (float) $forma_cadastradaTotal[0]->valor_total_pago;
+        }
+//        echo '<pre>';
+//        var_dump($forma_cadastradaTotal);
+//        var_dump($valor_metade);
+//        var_dump($valor_pago);
+//        die;
+        if ($valor_metade > $valor_pago && $empresaP[0]->faturamento_novo == 't') {
+//            echo 'asuhdhuasd';
+            $mensagem_data = 'É preciso faturar pelo menos metade da guia para ver resultados';
+            echo "<html>
+             <meta charset='UTF-8'>
+        <script type='text/javascript'>
+        alert('$mensagem_data');
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>";
+        }
+
+//        die;
+
+
+
+
+
+        $url = $empresa[0]->endereco_integracao_lab;
+        $identificador_lis = $empresa[0]->identificador_lis;
+        $origem_lis = $empresa[0]->origem_lis;
+        // Lote
+        $criacaoLis = date("Y-m-d") . 'T' . date("H:i:s") . '-0300';
+        $codigoLis = $exames_procedimentos[0]->guia_id; // Ambulatorio_guia_id provavelmente
+        $identificadorLis = $identificador_lis;
+        $origemLis = $origem_lis;
+        // Solicitacao->Exames
+        // Exames ->Exame
+        // Exame-> Solicitantes
+        // Solicitantes -> Solicitante
+        $resultado_json = '{
+            "lote": {
+              "codigoLis": "1001",
+              "identificadorLis": "teste",
+              "origemLis": "TESTE",
+              "criacaoLis": "2018-09-20T11:15:20-0300",
+              "solicitacao": { "codigoLis": "26" },
+              "parametros": {
+                "marcaLido": "N",
+                "parcial": "S",
+                "retorno": "LINK"
+              }
+            }
+          }';
+
+        // Exemplo ^
+//////////////////////////// Definição dos Objs ////////////////////////
+
+        $geral_obj = new stdClass();
+        $lote_obj = new stdClass();
+        $solicitacao_obj = new stdClass();
+        $parametros_obj = new stdClass();
+        $dataCadastro_obj = new stdClass();
+
+
+////////////////// Parametros ////////////////////////////
+        $parametros_obj->marcaLido = 'N';
+        $parametros_obj->parcial = 'S';
+        $parametros_obj->retorno = 'LINK';
+
+////////////////// Data Cadastro ////////////////////////////
+        $dataCadastro_obj->inicial = '2018-09-10T11:23:35-0300';
+        $dataCadastro_obj->retorno = '2018-09-20T11:23:35-0300';
+
+////////////////// Solicitação //////////////////////////
+        $solicitacao_obj->codigoLis = $codigoLis;
+
+////////////////// Lote /////////////////////////////////////
+        $lote_obj->codigoLis = $codigoLis;
+        $lote_obj->identificadorLis = $identificadorLis;
+        $lote_obj->origemLis = $origemLis;
+        $lote_obj->criacaoLis = $criacaoLis;
+        $lote_obj->solicitacao = $solicitacao_obj;
+        // $lote_obj->dataCadastro = $dataCadastro_obj;
+        $lote_obj->parametros = $parametros_obj;
+
+        $geral_obj->lote = $lote_obj;
+
+////////////// Solicitantes ////////////////////////////
+        // echo '<pre>';
+        // // var_dump(json_decode($resultado_json));
+        // var_dump($geral_obj);
+        // die;      
+        // $json_geral = json_encode($resultado_json);
+        $json_geral = json_encode($geral_obj);
+        // array_push($solicitante_array, $solicitantes_obj);
+        // Aqui defino o envio que irá ser feito para a função no nosso sistema que manda o Curl pro LabLuz
+        $postdata = http_build_query(
+                array(
+                    'body' => $json_geral,
+                    'url' => "$url/resultado",
+                )
+        );
+
+        $opts = array('http' =>
+            array(
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+        ));
+
+        $context = stream_context_create($opts);
+
+        $result = file_get_contents(base_url() . 'autocomplete/enviarCurlLabLuz', false, $context);
+
+
+        // $xml = simplexml_load_string($result);
+        // $json = json_encode($xml);
+        $decode_result = json_decode($result);
+        // echo '<pre>';
+        // var_dump($decode_result); 
+        // var_dump($decode_result->lote->solicitacoes->solicitacao[0]->link); 
+        // die;
+        // To encodando de novo só pra não ter o risco de ir um espaço vazio ou alguma besteira
+        // E depois atrapalhar na hora de refazer o Objeto.
+        $encode_result_again = json_encode($decode_result);
+
+        if (isset($decode_result)) {
+            $mensagem_imp = $decode_result->lote->solicitacoes->solicitacao[0]->mensagem;
+            $this->guia->gravarguiajsonlaboratorioresultado($guia_id, $encode_result_again, $mensagem_imp);
+            $mensagem_data = $mensagem_imp;
+            $mensagem_anterior = '';
+            $codigo_anterior = '';
+            if (isset($decode_result->lote->solicitacoes->solicitacao[0]->link)) {
+                redirect($decode_result->lote->solicitacoes->solicitacao[0]->link);
+            } else {
+                $mensagem_data = 'Não foram encontrados resultados para a guia selecionada';
+            }
+        } else {
+            $mensagem_data = 'Não foram encontrados resultados para a guia selecionada';
+        }
+
+        // echo '<pre>';
+        // echo $mensagem_data;
+        // var_dump($decode_result);
+        // die;
+        // $mensagem_completa = '';
+        // $mensagem_completa = '<p>' . $mensagem_data . '</p>';
+        echo "<html>
+             <meta charset='UTF-8'>
+        <script type='text/javascript'>
+        alert('$mensagem_data');
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>";
+        // echo(utf8_decode($mensagem_data)); die;
+        // redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
+        // }else{
+        //     $mensagem_data = 'Sem exames Laboratoriais na Guia';
+        // }
+    }
+
     function agendamento() {
         $this->loadView('ambulatorio/agendamento-lista');
     }
