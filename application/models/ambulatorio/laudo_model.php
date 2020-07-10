@@ -875,7 +875,7 @@ class laudo_model extends Model {
         return $return->result();
     }
 
-    function listarlaudo($ambulatorio_laudo_id) {
+    function listarlaudo1($ambulatorio_laudo_id) {
 
         $this->db->select('ag.ambulatorio_laudo_id,
                             ag.paciente_id,
@@ -933,6 +933,101 @@ class laudo_model extends Model {
         $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
         $this->db->join('tb_exames e', 'e.exames_id = ag.exame_id ', 'left');
         $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_operador me', 'me.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("ag.ambulatorio_laudo_id", $ambulatorio_laudo_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarlaudo($ambulatorio_laudo_id) {
+
+        $this->db->select("ag.ambulatorio_laudo_id,
+                            ag.paciente_id,
+                            ag.data_cadastro,
+                            ag.data,
+                            ag.exame_id,
+                            ag.situacao,
+                            ae.agenda_exames_nome_id,
+                            ag.texto,
+                            ag.adendo,
+                            p.nascimento,
+                            p.cpf,
+                            ag.situacao_revisor,
+                            o.nome as medico,
+                            o.conselho,
+                            o.carimbo,
+                            op.conselho as conselho2,
+                            ag.assinatura,
+                            ag.rodape,
+                            p.rg,
+                            p.empresa as empresa_paciente,
+                            ag.guia_id,
+                            ag.cabecalho,
+                            ag.medico_parecer1,
+                            ag.medico_parecer2,
+                            ag.cid2,
+                            ag.cid as cid1,
+                            ag.peso,
+                            ag.altura,
+                            ag.superficie_corporea,
+                            ag.ve_volume_telediastolico,
+                            ag.ve_volume_telessistolico,
+                            ag.ve_diametro_telediastolico,
+                            ag.ve_diametro_telessistolico,
+                            ag.ve_indice_do_diametro_diastolico,
+                            ag.ve_septo_interventricular,
+                            ag.ve_parede_posterior,
+                            ag.ve_relacao_septo_parede_posterior,
+                            ag.ve_espessura_relativa_paredes,
+                            ag.ve_massa_ventricular,
+                            ag.ve_indice_massa,
+                            ag.ve_relacao_volume_massa,
+                            ag.ve_fracao_ejecao,
+                            ag.ve_fracao_encurtamento,
+                            ag.vd_diametro_telediastolico,
+                            ag.vd_area_telediastolica,
+                            ag.ve_volume_telessistolico,
+                            ag.ae_diametro,                            
+                            ag.ao_diametro_raiz,
+                            ag.template_obj,
+                            ag.ao_relacao_atrio_esquerdo_aorta,
+                            me.nome as solicitante,
+                            op.nome as medicorevisor,
+                            op2.nome as usuario_salvar,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            ae.agenda_exames_id,
+                            ag.imagens,
+                            es.nome as sala,
+                            c.nome as convenio,
+                            pc.convenio_id,
+                            p.sexo,
+                            p.celular,
+                            p.telefone,
+                            p.whatsapp,
+                            p.prontuario_antigo,
+                            p.nome_mae,
+                            p.nome as paciente,
+                            ae.data as data_emissao,
+                            ae.data as data_agenda_exames,
+                            ag.opcoes_diagnostico,
+                            ag.nivel1_diagnostico,
+                            ag.nivel2_diagnostico,
+                            ag.nivel3_diagnostico,
+                            set.nome as setor,
+                            ae.observacoes");
+        $this->db->from('tb_ambulatorio_laudo ag');
+        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
+        $this->db->join('tb_operador op2', 'op2.operador_id = ag.operador_atualizacao', 'left');
+        $this->db->join('tb_exames e', 'e.exames_id = ag.exame_id ', 'left');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_setores set', 'ae.setores_id = set.setor_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_operador me', 'me.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');

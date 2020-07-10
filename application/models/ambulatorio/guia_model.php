@@ -3946,12 +3946,61 @@ ORDER BY ae.agenda_exames_id)";
                             e.internacao');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_municipio m', 'm.municipio_id = e.municipio_id', 'left');
-        $this->db->where('e.empresa_id', $empresa_id);
+        // $this->db->where('e.empresa_id', $empresa_id);
 
         $this->db->orderby('e.empresa_id');
         $return = $this->db->get();
         return $return->result();
     
+    }
+
+    function listarconfiguracaoimpressao($empresa_id = null) {
+        if($empresa_id == null){
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
+        // var_dump($empresa_id); die;
+        $data = date("Y-m-d");
+        $this->db->select('ei.empresa_impressao_cabecalho_id,ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_cabecalho ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        // $this->db->where('ei.empresa_id', $empresa_id);
+//      $this->db->where('paciente_id', $paciente_id);
+//      $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function medicocabecalhorodape($operador_id) {
+        $this->db->select('o.nome,
+                            o.operador_id,
+                            o.rodape,
+                            o.cabecalho,
+                            c.descricao as ocupacao,
+                            o.conselho,
+                            o.curriculo
+                            ');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+        $this->db->where('o.operador_id', $operador_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarconfiguracaoimpressaolaudo($empresa_id = null) {
+        $data = date("Y-m-d");
+        if($empresa_id == null){
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
+       
+        $this->db->select('ei.empresa_impressao_laudo_id,ei.cabecalho,ei.texto,ei.adicional_cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_laudo ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        // $this->db->where('ei.empresa_id', $empresa_id);
+        $this->db->where('ei.ativo', 't');
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function gravarguia($paciente_id) {
