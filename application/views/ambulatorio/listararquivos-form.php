@@ -3,19 +3,19 @@
 
         <h3><a href="#">Carregar imagem individual </a></h3>
         <div >
-            <?= form_open_multipart(base_url() . 'ambulatorio/laudo/importararquivospaciente'); ?>
-            <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
-            <input type="file" multiple="" name="arquivos[]"/>
-            <br><br><label>Observação</label><br>
-            <textarea name="observacao_arquivo"><?=$observacao[0]->observacao_paciente?></textarea><br><br>
-            <button type="submit" name="btnEnviar">Enviar</button>
-            <input type="hidden" name="paciente_id" value="<?= $ambulatorio_laudo_id; ?>" />
-            <?= form_close(); ?>
-
-        </div>
-
+ 
+            <form action="<?= base_url(); ?>ambulatorio/laudo/importararquivospaciente" method="post" enctype="multipart/form-data">
+                <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
+                <input type="file" multiple="" name="arquivos[]"/>
+                <br><br><label>Observação</label><br>
+                <textarea name="observacao_arquivo"><?=$observacao[0]->observacao_paciente?></textarea><br><br>
+                <button type="submit" name="btnEnviar">Enviar</button>
+                <input type="hidden" name="paciente_id" value="<?= $ambulatorio_laudo_id; ?>" />
+            </form>
+           
+        </div> 
         <h3><a href="#">Arquivos</a></h3>
-        <div >
+        <div>
             <table>
                 <tr>
                     <?

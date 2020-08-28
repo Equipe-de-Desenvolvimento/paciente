@@ -5,14 +5,14 @@
             <a href="<?= base_url() ?>ambulatorio/exame/moverimagens/<?= $exame_id ?>/<?= $sala_id ?>">Carregar</a>
         </div>
         <h3><a href="#">Carregar imagem individual </a></h3>
-        <div >
-            <?= form_open_multipart(base_url() . 'ambulatorio/exame/importarimagem'); ?>
-            <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
-            <input type="file" name="userfile"/>
-            <button type="submit" name="btnEnviar">Enviar</button>
-            <input type="hidden" name="exame_id" value="<?= $exame_id; ?>" />
-            <input type="hidden" name="sala_id" value="<?= $sala_id; ?>" />
-            <?= form_close(); ?>
+        <div> 
+            <form action="<?= base_url()?>ambulatorio/exame/importarimagem" method="post" enctype="multipart/form-data">
+                <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
+                <input type="file" name="userfile"/>
+                <button type="submit" name="btnEnviar">Enviar</button>
+                <input type="hidden" name="exame_id" value="<?= $exame_id; ?>" />
+                <input type="hidden" name="sala_id" value="<?= $sala_id; ?>" />
+            </form> 
 
         </div>
 

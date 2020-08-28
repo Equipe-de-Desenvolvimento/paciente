@@ -12,7 +12,7 @@
 |
 */
 //$config['base_url']	= "http://192.168.25.6/clinica/";
-$config['base_url']	= "http://localhost/paciente/";
+$config['base_url']	= "http://192.168.0.165/paciente/";
 
 /*
 |--------------------------------------------------------------------------

@@ -1,14 +1,13 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
         <h3><a href="#">Carregar imagem individual </a></h3>
-        <div >
-            <?= form_open_multipart(base_url() . 'cadastros/pacientes/importarimagem'); ?>
-            <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
-            <input type="file" name="userfile"/>
-            <button type="submit" name="btnEnviar">Enviar</button>
-            <input type="hidden" name="paciente_id" value="<?= $paciente_id; ?>" />
-            <?= form_close(); ?>
-
+        <div > 
+            <form action="<?= base_url(); ?>cadastros/pacientes/importarimagem" method="post" enctype="multipart/form-data">  
+                <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
+                <input type="file" name="userfile"/>
+                <button type="submit" name="btnEnviar">Enviar</button>
+                <input type="hidden" name="paciente_id" value="<?= $paciente_id; ?>" />
+            </form>  
         </div>
 
         <h3><a href="#">Vizualizar imagens </a></h3>

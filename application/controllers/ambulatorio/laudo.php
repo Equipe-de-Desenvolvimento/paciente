@@ -285,7 +285,7 @@ class Laudo extends BaseController {
         }
 
         $empresa_upload_pasta = $this->laudo->listarempresaenderecouploadpasta();
-//        var_dump($empresa_upload); die;
+//        var_dump($empresa_upload_pasta); die;
         if ($empresa_upload_pasta != '') {
             $pasta_sistema = $empresa_upload_pasta;
         } else {
@@ -293,17 +293,17 @@ class Laudo extends BaseController {
         }
 
         $empresa_upload_pasta_paciente = $this->laudo->listarempresaenderecouploadpastapaciente();
-//        var_dump($empresa_upload); die;
+//        var_dump($empresa_upload_pasta); die;
         if ($empresa_upload_pasta_paciente != '') {
             $pasta_sistema_paciente = $empresa_upload_pasta_paciente;
         } else {
             $pasta_sistema_paciente = "paciente";
-        }
-
+        } 
         $data['pasta_sistema'] = $pasta_sistema;
 
         $data['pasta_sistema_paciente'] = $pasta_sistema_paciente;
-
+        
+// var_dump($pasta_sistema); die;
 
 
         $data['arquivo_pasta_pdf'] = directory_map($caminho_arquivos);
@@ -329,7 +329,7 @@ class Laudo extends BaseController {
 
         $ambulatorio_laudo_id = $_POST['paciente_id'];
 
-        for ($i = 0; $i < count($_FILES['arquivos']['name']); $i++) {
+        for ($i = 0; $i < count(@$_FILES['arquivos']['name']); $i++) {
             $_FILES['userfile']['name'] = $_FILES['arquivos']['name'][$i];
             $_FILES['userfile']['type'] = $_FILES['arquivos']['type'][$i];
             $_FILES['userfile']['tmp_name'] = $_FILES['arquivos']['tmp_name'][$i];

@@ -3,12 +3,13 @@
 
         <h3><a href="#">Carregar batidas </a></h3>
         <div>
-
-            <?= form_open_multipart(base_url() . 'ponto/importarponto/importarbatida'); ?>
-            <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br/>
-            <input type="file" name="userfile" />
-            <button type="submit" name="btnEnviar">Enviar</button>
-            <?= form_close(); ?>
+ 
+            <form action="<?= base_url();?>ponto/importarponto/importarbatida" method="post" enctype="multipart/form-data">
+                <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br/>
+                <input type="file" name="userfile" />
+                <button type="submit" name="btnEnviar">Enviar</button>
+            </form>
+            
             <div style="width: 400px; margin: 0">
                 <?
                 if (isset($erros)) :

@@ -2,12 +2,13 @@
     <div id="accordion">
         <h3><a href="#">Carregar imagem entrada nota </a></h3>
         <div >
-            <?= form_open_multipart(base_url() . 'estoque/entrada/importarimagementrada'); ?>
-            <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
-            <input type="file" name="userfile"/>
-            <button type="submit" name="btnEnviar">Enviar</button>
-            <input type="hidden" name="paciente_id" value="<?= $estoque_entrada_id; ?>" />
-            <?= form_close(); ?>
+             
+            <form action="<?= base_url(); ?>estoque/entrada/importarimagementrada" method="post" enctype="multipart/form-data">
+                <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
+                <input type="file" name="userfile"/>
+                <button type="submit" name="btnEnviar">Enviar</button>
+                <input type="hidden" name="paciente_id" value="<?= $estoque_entrada_id; ?>" />
+            </form> 
 
         </div>
 
