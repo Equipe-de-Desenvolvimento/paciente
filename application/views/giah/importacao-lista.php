@@ -1,7 +1,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
         <div id="accordion">
  
-        <form action="<?= base_url(); ?>giah/importacaoopm/importar" method="post" enctype="multipart/form-data">
+        <form  method="post" action="<?= base_url(); ?>giah/importacaoopm/importar" enctype="multipart/form-data">
             <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br/>
             <input type="file" name="userfile" />
             <button type="submit" name="btnEnviar">Enviar</button>

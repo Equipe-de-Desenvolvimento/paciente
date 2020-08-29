@@ -3,7 +3,7 @@
         <h3><a href="#">Carregar imagem individual </a></h3>
         <div>
           
-            <form action="<?= base_url(); ?>ambulatorio/laudo/importarimagem" method="post" enctype="multipart/form-data">
+            <form  method="post" action="<?= base_url(); ?>ambulatorio/laudo/importarimagem"  enctype="multipart/form-data">
                 
                 <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
                 <input type="file" name="userfile"/>

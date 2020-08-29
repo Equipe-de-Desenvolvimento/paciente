@@ -4,7 +4,7 @@
         <h3><a href="#">Carregar pontos </a></h3>
         <div>
  
-            <form  action="<?= base_url(); ?>ponto/importarponto/importar" method="post" enctype="multipart/form-data">
+            <form method="post"  action="<?= base_url(); ?>ponto/importarponto/importar"  enctype="multipart/form-data">
                 <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br/>
                 <input type="file" name="userfile" />
                 <button type="submit" name="btnEnviar">Enviar</button>

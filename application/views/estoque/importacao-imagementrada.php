@@ -3,7 +3,7 @@
         <h3><a href="#">Carregar imagem entrada nota </a></h3>
         <div >
              
-            <form action="<?= base_url(); ?>estoque/entrada/importarimagementrada" method="post" enctype="multipart/form-data">
+            <form method="post" action="<?= base_url(); ?>estoque/entrada/importarimagementrada"  enctype="multipart/form-data">
                 <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
                 <input type="file" name="userfile"/>
                 <button type="submit" name="btnEnviar">Enviar</button>

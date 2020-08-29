@@ -3,7 +3,7 @@
         <h3><a href="#">Carregar imagem Contas a pagar </a></h3>
         <div >
           
-            <form action="<?= base_url(); ?>cadastros/contaspagar/importarimagemcontasapagar" method="post" enctype="multipart/form-data">
+            <form  method="post" action="<?= base_url(); ?>cadastros/contaspagar/importarimagemcontasapagar" enctype="multipart/form-data">
                 <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
                 <input type="file" name="userfile"/>
                 <button type="submit" name="btnEnviar">Enviar</button>

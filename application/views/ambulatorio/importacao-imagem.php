@@ -6,7 +6,7 @@
         </div>
         <h3><a href="#">Carregar imagem individual </a></h3>
         <div> 
-            <form action="<?= base_url()?>ambulatorio/exame/importarimagem" method="post" enctype="multipart/form-data">
+            <form method="post" action="<?= base_url()?>ambulatorio/exame/importarimagem"  enctype="multipart/form-data">
                 <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
                 <input type="file" name="userfile"/>
                 <button type="submit" name="btnEnviar">Enviar</button>
