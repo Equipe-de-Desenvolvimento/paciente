@@ -274,7 +274,7 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/laudodigitador-form_1', $data);
     }
 
-    function listararquivos($ambulatorio_laudo_id) {
+    function listararquivos($ambulatorio_laudo_id=NULL) {
         $this->load->helper('directory');
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
 //        var_dump($empresa_upload); die;
@@ -313,6 +313,25 @@ class Laudo extends BaseController {
 
         $data['observacao'] = $this->laudo->listaobservacaopaciente($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        
+        if($ambulatorio_laudo_id == ""){
+            $mensagem = "Ainda não foi feito laudo para esse paciente";
+             echo "<html>
+                    <meta charset='UTF-8'>
+        <script type='text/javascript'> 
+        alert('$mensagem');
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>";
+        }
+        
+         
+         
+         
         $this->loadView('ambulatorio/listararquivos-form', $data);
     }
 
