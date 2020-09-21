@@ -282,8 +282,7 @@ class Laudo extends BaseController {
             $caminho_arquivos = "$empresa_upload/consulta/$ambulatorio_laudo_id/";
         } else {
             $caminho_arquivos = "/home/sisprod/projetos/clinica/upload/consulta/$ambulatorio_laudo_id/";
-        }
-
+        } 
         $empresa_upload_pasta = $this->laudo->listarempresaenderecouploadpasta();
 //        var_dump($empresa_upload_pasta); die;
         if ($empresa_upload_pasta != '') {
