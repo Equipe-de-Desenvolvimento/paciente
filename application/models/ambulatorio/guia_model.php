@@ -77,8 +77,9 @@ class guia_model extends Model {
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_recebido', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'pt.grupo = ag.nome', 'left');
         $this->db->where('ae.confirmado', 't');
-        $this->db->where('ae.tipo', 'EXAME');
+        $this->db->where('ag.tipo', 'EXAME');
         $this->db->where("ae.paciente_id", $paciente_id);
         $this->db->orderby('ae.guia_id');
         $this->db->orderby('ae.agenda_exames_id');
