@@ -28,12 +28,12 @@
             <?
             if ($laudo['0']->situacao == "FINALIZADO" && $laudo['0']->medico_parecer2 == "" || $laudo['0']->medico_parecer1 == 38 ) {
                 ?>
-            <tr><td width="50px"></td><td><center><img  width="130px" height="80px" src="<?= "/home/sisprod/projetos/clinica/upload//1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".bmp" ?>"></center></td></tr>
+            <tr><td width="50px"></td><td><center><img  width="130px" height="80px" src="<?= base_url()."upload//1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".bmp" ?>"></center></td></tr>
                 <?
             }
             if ($laudo['0']->situacao == "FINALIZADO" && $laudo['0']->medico_parecer2 != "") {
                 ?>
-                <tr><td width="50px"></td><td><center><img  width="130px" height="80px" src="<?="/home/sisprod/projetos/clinica/upload//1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".bmp" ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  width="130px" height="80px" src="<?= "/home/sisprod/projetos/clinica/upload//1ASSINATURAS/" . $laudo['0']->medico_parecer2 . ".bmp" ?>"><center></td><td></td></tr>
+                <tr><td width="50px"></td><td><center><img  width="130px" height="80px" src="<?=base_url()."upload//1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".bmp" ?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img  width="130px" height="80px" src="<?= base_url()."upload//1ASSINATURAS/" . $laudo['0']->medico_parecer2 . ".bmp" ?>"><center></td><td></td></tr>
             <? }
             ?>
         <p></p>

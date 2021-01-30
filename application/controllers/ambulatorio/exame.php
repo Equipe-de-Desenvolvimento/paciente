@@ -397,7 +397,7 @@ class Exame extends BaseController {
     function anexarimagem($exame_id, $sala_id) {
 
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map(base_url()."upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
         }
@@ -412,7 +412,7 @@ class Exame extends BaseController {
     function anexarimagemmedico($exame_id, $sala_id) {
 
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map(base_url()."upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
@@ -486,49 +486,49 @@ class Exame extends BaseController {
         if ($sala_id == 1) {
 
             //$arquivo_pasta = directory_map("/home/hamilton/teste/");
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom1/");
+            $arquivo_pasta = directory_map(base_url()."upload/ultrasom1/");
             //$origem = "/home/hamilton/teste";
-            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom1";
+            $origem = base_url()."upload/ultrasom1";
             foreach ($arquivo_pasta as $value) {
                 $nova = substr($value, 11, 6);
-                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                if (!is_dir(base_url()."upload/$exame_id")) {
+                    mkdir(base_url()."upload/$exame_id");
+                    $destino = base_url()."upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                $destino = base_url()."upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
         }
         if ($sala_id == 2) {
 
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom2/");
-            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom2";
+            $arquivo_pasta = directory_map(base_url()."upload/ultrasom2/");
+            $origem = base_url()."upload/ultrasom2";
             foreach ($arquivo_pasta as $value) {
                 $nova = substr($value, 11, 6);
-                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                if (!is_dir(base_url()."upload/$exame_id")) {
+                    mkdir(base_url()."upload/$exame_id");
+                    $destino = base_url()."upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                $destino = base_url()."upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
         }
         if ($sala_id == 9) {
 
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom3/");
-            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom3";
+            $arquivo_pasta = directory_map(base_url()."upload/ultrasom3/");
+            $origem = base_url()."upload/ultrasom3";
             foreach ($arquivo_pasta as $value) {
                 $nova = substr($value, 8, 6);
-                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                if (!is_dir(base_url()."upload/$exame_id")) {
+                    mkdir(base_url()."upload/$exame_id");
+                    $destino = base_url()."upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                $destino = base_url()."upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
@@ -544,55 +544,55 @@ class Exame extends BaseController {
         if ($sala_id == 1) {
 
             //$arquivo_pasta = directory_map("/home/hamilton/teste/");
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom1/");
+            $arquivo_pasta = directory_map(base_url()."upload/ultrasom1/");
             //$origem = "/home/hamilton/teste";
-            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom1";
+            $origem = base_url()."upload/ultrasom1";
             foreach ($arquivo_pasta as $value) {
 
                 $nova = substr($value, 11, 6);
 
-                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                if (!is_dir(base_url()."upload/$exame_id")) {
+                    mkdir(base_url()."upload/$exame_id");
+                    $destino = base_url()."upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                $destino = base_url()."upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
         }
         if ($sala_id == 2) {
 
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom2/");
-            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom2";
+            $arquivo_pasta = directory_map(base_url()."upload/ultrasom2/");
+            $origem = base_url()."upload/ultrasom2";
             foreach ($arquivo_pasta as $value) {
 
                 $nova = substr($value, 11, 6);
 
-                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                if (!is_dir(base_url()."upload/$exame_id")) {
+                    mkdir(base_url()."upload/$exame_id");
+                    $destino = base_url()."upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                $destino = base_url()."upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
         }
         if ($sala_id == 9) {
 
-            $arquivo_pasta = directory_map("/home/sisprod/projetos/clinica/upload/ultrasom3/");
-            $origem = "/home/sisprod/projetos/clinica/upload/ultrasom3";
+            $arquivo_pasta = directory_map(base_url()."upload/ultrasom3/");
+            $origem = base_url()."upload/ultrasom3";
             foreach ($arquivo_pasta as $value) {
 
                 $nova = substr($value, 8, 6);
 
-                if (!is_dir("/home/sisprod/projetos/clinica/upload/$exame_id")) {
-                    mkdir("/home/sisprod/projetos/clinica/upload/$exame_id");
-                    $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                if (!is_dir(base_url()."upload/$exame_id")) {
+                    mkdir(base_url()."upload/$exame_id");
+                    $destino = base_url()."upload/$exame_id/$nova";
                     chmod($destino, 0777);
                 }
-                $destino = "/home/sisprod/projetos/clinica/upload/$exame_id/$nova";
+                $destino = base_url()."upload/$exame_id/$nova";
                 $local = "$origem/$value";
                 copy($local, $destino);
             }
