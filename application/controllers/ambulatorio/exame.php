@@ -436,7 +436,7 @@ class Exame extends BaseController {
             chmod($destino, 0777);
         }
 
-        $config['upload_path'] = "/home/sisprod/projetos/clinica/upload/" . $exame_id . "/";
+        $config['upload_path'] = base_url()."upload/" . $exame_id . "/";
         $config['allowed_types'] = 'gif|jpg|png|jpeg';
         $config['max_size'] = '1000';
         $config['overwrite'] = TRUE;

@@ -16,7 +16,7 @@
             
                 ?>
                 <tr>
-                    <td width="50px"></td><td><a><img  width="410px" height="410px" src="<?= "/home/sisprod/projetos/clinica/upload/" . $exame_id . "/" . $value ?>"></a></td>
+                    <td width="50px"></td><td><a><img  width="410px" height="410px" src="<?= base_url()."upload/" . $exame_id . "/" . $value ?>"></a></td>
                 </tr>  
                 <?
 

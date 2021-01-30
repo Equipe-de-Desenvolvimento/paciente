@@ -14,7 +14,7 @@
 $i++;
             ?>
     
-            <td width="30px"></td><td><img  width="410px" height="360px" src="<?= "/home/sisprod/projetos/clinica/upload/" . $exame_id . "/" . $value; ?>"></td>
+            <td width="30px"></td><td><img  width="410px" height="360px" src="<?= base_url()."upload/" . $exame_id . "/" . $value; ?>"></td>
             
             <?
 
