@@ -1833,7 +1833,7 @@ class Laudo extends BaseController {
         }
         $verificador = $data['laudo']['0']->imagens;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map(base_url()."upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
