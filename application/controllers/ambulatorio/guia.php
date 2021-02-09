@@ -37,6 +37,9 @@ class Guia extends BaseController {
         $data['exames'] = $this->guia->listarexames($paciente_id);
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['empresa'] = $this->guia->listarempresapermissoes();
+        // echo '<pre>';
+        // var_dump($data['empresa']); 
+        // die;
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/guia-lista', $data);
     }
