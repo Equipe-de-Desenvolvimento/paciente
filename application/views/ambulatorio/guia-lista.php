@@ -100,13 +100,18 @@
                                         <?
                                     }
                                     ?>
+                                            
                                         <? if (@$empresa[0]->botao_arquivos_paciente == 't') { ?>
-
+                                           <td class="<?php echo $estilo_linha; ?>" width="50px;">
+                                                <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/downloadarquivos/". $item->ambulatorio_laudo_id ?>');">
+                                                        Download</a></div>
+                                            </td>
                                             <td class="<?php echo $estilo_linha; ?>" width="70px;">
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/listararquivos/" . $item->ambulatorio_laudo_id; ?> ', '_blank', 'width=800,height=600');">
                                                         Arquivos
-                                                    </a>
+                                                    </a> 
                                                 </div>
                                             </td>  
                                         <? } ?>

@@ -275,7 +275,7 @@ class Laudo extends BaseController {
     }
 
     function listararquivos($ambulatorio_laudo_id=NULL) {
-        $this->load->helper('directory');
+        $this->load->helper('directory'); 
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
 //        var_dump($empresa_upload); die;
         if ($empresa_upload != '') {
@@ -302,8 +302,7 @@ class Laudo extends BaseController {
 
         $data['pasta_sistema_paciente'] = $pasta_sistema_paciente;
         
-// var_dump($pasta_sistema); die;
-
+// var_dump($pasta_sistema); die; 
 
         $data['arquivo_pasta_pdf'] = directory_map($caminho_arquivos);
         if ($data['arquivo_pasta_pdf'] != false) {
@@ -2241,6 +2240,67 @@ class Laudo extends BaseController {
         $this->loadView('ambulatorio/imagemconsulta', $data);
         
        
+    }
+    
+    function downloadarquivos($ambulatorio_laudo_id){
+        $zip = new ZipArchive;
+        $this->load->helper('directory');
+        
+        $empresa_upload = $this->laudo->listarempresaenderecoupload();
+        if ($empresa_upload != '') {
+            $caminho_arquivos = "$empresa_upload/consulta/$ambulatorio_laudo_id/";
+        } else {
+            $caminho_arquivos = base_url()."upload/consulta/$ambulatorio_laudo_id/";
+        } 
+         $arquivo_pasta_pdf = directory_map($caminho_arquivos);
+        if ($arquivo_pasta_pdf != false) {
+            sort($arquivo_pasta_pdf);
+        }
+        if ($arquivo_pasta_pdf != true){
+              $mensagem = "Nenhum arquivo encontrado.";
+             echo "<html>
+                    <meta charset='UTF-8'>
+            <script type='text/javascript'> 
+            alert('$mensagem');
+            window.onunload = fechaEstaAtualizaAntiga;
+            function fechaEstaAtualizaAntiga() {
+                window.opener.location.reload();
+                }
+            window.close();
+                </script>
+                </html>";
+             die();
+        }
+                
+        $arquivo_pasta = directory_map("./upload/consulta/$ambulatorio_laudo_id");
+        if ($arquivo_pasta != false) { 
+            $deletar[] = "./upload/consulta/$ambulatorio_laudo_id/Arquivos.zip"; 
+            foreach ($deletar as $arquivonome) {
+                unlink($arquivonome);
+            } 
+            $zip->open("./upload/consulta/$ambulatorio_laudo_id/Arquivos.zip", ZipArchive::CREATE); //Criando arquivo Arquivos.zip
+            foreach ($arquivo_pasta as $value) { 
+                $zip->addFile("./upload/consulta/$ambulatorio_laudo_id/$value", $value); // fazendo com que todos os arquivos da pasta vire .zip
+            }
+            $zip->close();
+        } 
+        $empresa_upload_pasta = $this->laudo->listarempresaenderecouploadpasta(); 
+        if ($empresa_upload_pasta != '') {
+            $pasta_sistema = $empresa_upload_pasta;
+        } else {
+            $pasta_sistema = "clinica";
+        } 
+        $empresa_upload_pasta_paciente = $this->laudo->listarempresaenderecouploadpastapaciente(); 
+        if ($empresa_upload_pasta_paciente != '') {
+            $pasta_sistema_paciente = $empresa_upload_pasta_paciente;
+        } else {
+            $pasta_sistema_paciente = "paciente";
+        } 
+        
+        redirect(str_replace($pasta_sistema_paciente, $pasta_sistema, base_url())."upload/consulta/$ambulatorio_laudo_id/Arquivos.zip");
+        
+        die(); 
+
     }
     
 }
