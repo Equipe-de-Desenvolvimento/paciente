@@ -279,9 +279,9 @@ class Laudo extends BaseController {
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
 //        var_dump($empresa_upload); die;
         if ($empresa_upload != '') {
-            $caminho_arquivos = "$empresa_upload/consulta/$ambulatorio_laudo_id/";
+            $caminho_arquivos = "$empresa_upload/consulta/paciente/$ambulatorio_laudo_id/";
         } else {
-            $caminho_arquivos = base_url()."upload/consulta/$ambulatorio_laudo_id/";
+            $caminho_arquivos = base_url()."upload/consulta/paciente/$ambulatorio_laudo_id/";
         } 
         $empresa_upload_pasta = $this->laudo->listarempresaenderecouploadpasta();
 //        var_dump($empresa_upload_pasta); die;
@@ -353,15 +353,21 @@ class Laudo extends BaseController {
             $_FILES['userfile']['error'] = $_FILES['arquivos']['error'][$i];
             $_FILES['userfile']['size'] = $_FILES['arquivos']['size'][$i];
 
-            if (!is_dir("$caminho_arquivos/consulta/$ambulatorio_laudo_id")) {
-                mkdir("$caminho_arquivos/consulta/$ambulatorio_laudo_id");
-                $destino = "$caminho_arquivos/consulta/$ambulatorio_laudo_id";
+            
+             if (!is_dir("$caminho_arquivos/consulta/paciente/")) {
+                mkdir("$caminho_arquivos/consulta/paciente/");
+                $destino = "$caminho_arquivos/consulta/paciente/";
                 chmod($destino, 0777);
             }
-            
+            if (!is_dir("$caminho_arquivos/consulta/paciente/$ambulatorio_laudo_id")) {
+                mkdir("$caminho_arquivos/consulta/paciente/$ambulatorio_laudo_id");
+                $destino = "$caminho_arquivos/consulta/paciente/$ambulatorio_laudo_id";
+                chmod($destino, 0777);
+            }
+             
 
             //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
-            $config['upload_path'] = "$caminho_arquivos/consulta/" . $ambulatorio_laudo_id . "/";
+            $config['upload_path'] = "$caminho_arquivos/consulta/paciente/" . $ambulatorio_laudo_id . "/";
             $config['allowed_types'] = 'gif|jpg|BMP|bmp|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar|xml|txt|';
             $config['max_size'] = '0';
             $config['overwrite'] = FALSE;
