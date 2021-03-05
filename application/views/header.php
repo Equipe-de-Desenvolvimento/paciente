@@ -4,7 +4,14 @@
 if ($this->session->userdata('autenticado') != true) {
     redirect(base_url() . "login/index/login004", "refresh");
 }
-
+   
+$this->db->select('ep.*, e.*');
+$this->db->from('tb_empresa e'); 
+$this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+$this->db->orderby('e.empresa_id');
+$return = $this->db->get();
+$data['empresa'] = $return->result();
+        
 function alerta($valor) {
     echo "<script>alert('$valor');</script>";
 }
@@ -57,7 +64,11 @@ function debug($object) {
             })(jQuery);
 
         </script>
-
+        <style>
+            #imgLogoClinica{
+                float:right;
+            }
+        </style>
     </head>
     <script type="text/javascript" src="<?= base_url() ?>js/funcoes.js"></script>
 
@@ -86,6 +97,13 @@ function debug($object) {
                 <!--<div id="user_foto">Imagem</div>-->
 
             </div>
+            <?php if($data['empresa'][0]->mostrar_logo_clinica == "t"){?>
+             <div id="imgLogoClinica" style="">
+                    <img src="<?= base_url(); ?>upload/logomarca/<?= $data['empresa'][0]->empresa_id; ?>/logomarca.jpg" alt="Logo Clinica"
+                         title="Logo Clinica" height="70" id="Insert_logo" />
+             </div>
+            <?php }?> 
+            
         </div>
         <div class="decoration_header">&nbsp;</div>
         <!-- Fim do Cabeçalho -->
@@ -95,7 +113,9 @@ function debug($object) {
 
                     <? $paciente_id = $this->session->userdata('operador_id'); ?>
 
-                    <li><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/agendamento">Agendamento</a></span></li>
+                     <?php if($data['empresa'][0]->desativar_agendamento_paciente != "t"){?>
+                     <li><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/agendamento">Agendamento</a></span></li>
+                    <?php }?>
                     <!--<li><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/pesquisar/<?= $paciente_id ?>">Exames</a></span></li>-->
                     <li><span class="file"><a onclick="javascript: return confirm('Deseja realmente sair da aplicação?');"
                                               href="<?= base_url() ?>login/sair">Sair</a></span>
@@ -105,9 +125,12 @@ function debug($object) {
                 <ul id="menu" class="filetree">
 
                     <? $paciente_id = $this->session->userdata('operador_id'); ?>
-
+                    <?php if($data['empresa'][0]->desativar_agendamento_paciente != "t"){?>
                     <li><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/agendamento/<?= $paciente_id ?>">Agendamento</a></span></li>
+                    <?php }?>
+                     <?php if($data['empresa'][0]->desativar_exame_paciente != "t"){?>
                     <li><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/pesquisar/<?= $paciente_id ?>">Exames</a></span></li>
+                     <?php }?>
                     <li><span class="file"><a onclick="javascript: return confirm('Deseja realmente sair da aplicação?');"
                                               href="<?= base_url() ?>login/sair">Sair</a></span>
                     </li>
