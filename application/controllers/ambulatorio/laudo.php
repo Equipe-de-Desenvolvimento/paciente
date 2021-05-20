@@ -283,7 +283,7 @@ class Laudo extends BaseController {
         } else {
             $caminho_arquivos = base_url()."upload/consulta/paciente/$ambulatorio_laudo_id/";
         } 
-        
+         
        
         $empresa_upload_pasta = $this->laudo->listarempresaenderecouploadpasta();
 //        var_dump($empresa_upload_pasta); die;
@@ -2260,6 +2260,7 @@ class Laudo extends BaseController {
         } else {
             $caminho_arquivos = base_url()."upload/consulta/$ambulatorio_laudo_id/";
         } 
+        
          $arquivo_pasta_pdf = directory_map($caminho_arquivos);
         if ($arquivo_pasta_pdf != false) {
             sort($arquivo_pasta_pdf);
