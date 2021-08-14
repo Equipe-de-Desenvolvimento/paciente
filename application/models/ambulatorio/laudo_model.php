@@ -2229,6 +2229,48 @@ class laudo_model extends Model {
         }
     }
 
+
+    function gravaranexoarquivo($ambulatorio_laudo_id, $caminho, $nome){
+        $this->db->select('paciente_id');
+        $this->db->from('tb_ambulatorio_laudo');
+        $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);
+        $return = $this->db->get()->result();
+
+        $horario = date("Y-m-d H:i:s");
+        // $operador_id = $this->session->userdata('operador_id');
+                    
+        $this->db->set('laudo_id', $ambulatorio_laudo_id);
+        $this->db->set('nome', $nome);
+        $this->db->set('paciente', 't');
+        $this->db->set('paciente_id', $return[0]->paciente_id);
+        $this->db->set('caminho', $caminho);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', 0);
+        $this->db->insert('tb_ambulatorio_arquivos_anexados');
+        
+        $this->db->select('nome');
+        $this->db->from('tb_paciente');
+        $this->db->where('paciente_id', $return[0]->paciente_id);
+        $dados = $this->db->get()->result();
+
+        $jsonArray['acao'] = 'Fez o Upload de um Arquivo para o Paciente <b>'.$dados[0]->nome.'</b>';
+        $extras['Nome_Arquivo'] = $nome;
+        $jsonArray['extras'] = $extras;
+
+        $this->db->set('id', $return[0]->paciente_id);
+        if($return[0]->paciente_id > 0){
+            $this->db->set('paciente_id', $return[0]->paciente_id);
+        }
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', 0);
+        $this->db->set('local', 'ARQUIVOS');
+        $this->db->set('tabela', 'tb_ambulatorio_arquivos_anexados');
+        $this->db->set('empresa_id', $this->session->userdata('empresa_id'));
+        $this->db->set('json', json_encode($jsonArray));
+        $this->db->insert('tb_auditoria_geral');
+
+    }
+
 }
 
 ?>

@@ -338,7 +338,7 @@ class Laudo extends BaseController {
         function importararquivospaciente() {
 
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
-//        var_dump($empresa_upload); die;
+    //    var_dump($empresa_upload); die;
         if ($empresa_upload != '') {
             $caminho_arquivos = "$empresa_upload";
         } else {
@@ -355,6 +355,7 @@ class Laudo extends BaseController {
             $_FILES['userfile']['error'] = $_FILES['arquivos']['error'][$i];
             $_FILES['userfile']['size'] = $_FILES['arquivos']['size'][$i];
 
+            $_FILES['userfile']['name'] = str_replace(" ","_", $_FILES['userfile']['name']);
             
              if (!is_dir("$caminho_arquivos/consulta/paciente/")) {
                 mkdir("$caminho_arquivos/consulta/paciente/");
@@ -381,6 +382,8 @@ class Laudo extends BaseController {
             } else {
                 $error = null;
                 $data = array('upload_data' => $this->upload->data());
+                $nome = $_FILES['userfile']['name'];
+                $this->laudo->gravaranexoarquivo($ambulatorio_laudo_id, "upload/consulta/paciente/$ambulatorio_laudo_id/$nome", $nome);
             }
         }
 //        var_dump($error); die;

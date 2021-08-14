@@ -34,6 +34,7 @@ class Guia extends BaseController {
     }
 
     function pesquisar($paciente_id) {
+        $this->load->helper('directory');
         $data['exames'] = $this->guia->listarexames($paciente_id);
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['empresa'] = $this->guia->listarempresapermissoes();

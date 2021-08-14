@@ -66,7 +66,11 @@
                     <tbody>
                         <?
                         $estilo_linha = "tabela_content01";
-                        $urlClinica = $empresa[0]->endereco_externo_base . $empresa[0]->endereco_upload_pasta . '/';
+                        $urlClinica = $empresa[0]->endereco_externo_base;
+                        $urlCaminho = $empresa[0]->endereco_upload;
+                            // echo '<pre>';
+                            // print_r($urlCaminho);
+                            // die;
                         // var_dump($urlClinica); die;
                         foreach ($exames as $item) :
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -77,36 +81,50 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                                     <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->inicio ?></td>
 
-                                    <?
-                                    if ($item->situacao == "FINALIZADO") {
-                                        ?>
-                                        <? if (@$empresa[0]->botao_laudo_paciente == 't') { ?>
-                                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?=$urlClinica?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
-                                                        Laudo</a></div>
-                                            </td>
-                                        <? } ?>
-                                        <? if (@$empresa[0]->botao_imagem_paciente == 't') { ?>
-                                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?=$urlClinica?>ambulatorio/laudo/impressaoimagem/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
-                                                        Imagem</a></div>
-                                            </td>  
+                                    <? if ($item->situacao == "FINALIZADO") { ?>
+                                        <?
+                                            $caminhoCompleto = $urlCaminho.'/laudopdf/'.$item->ambulatorio_laudo_id;
+                                            $arquivos = directory_map($caminhoCompleto);
 
+                                            foreach($arquivos as $value){
+                                                
+                                                if(substr($value, 0, 8) == 'imagens_'){
+                                                    $nome_image = $value;
+                                                }else{
+                                                    $nome_laudo = $value;
+                                                }
+                                            }
+                                        ?>
+
+                                        <? if (@$empresa[0]->botao_laudo_paciente == 't') { ?>
+                                            <? if(isset($nome_laudo)){?>
+                                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?=$urlClinica?>upload/laudopdf/<?= $item->ambulatorio_laudo_id ?>/<?=$nome_laudo?>');">
+                                                        Laudo</a></div>
+                                                </td>
+                                            <? } ?> 
+                                        <? } ?>
+
+                                        <? if (@$empresa[0]->botao_imagem_paciente == 't') { ?>
+                                            <? if(isset($nome_image)){?>
+                                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?=$urlClinica?>upload/laudopdf/<?= $item->ambulatorio_laudo_id ?>/<?=$nome_image?>');">
+                                                        Imagem</a></div>
+                                                </td>  
+                                            <? } ?>
                                         <? } ?>
     
 
 
 
-                                        <?
-                                    }
-                                    ?>
+                                    <? } ?>
                                             
                                         <? if (@$empresa[0]->botao_arquivos_paciente == 't') { ?>
-                                           <td class="<?php echo $estilo_linha; ?>" width="50px;">
+                                           <!-- <td class="<?php echo $estilo_linha; ?>" width="50px;">
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/downloadarquivos/". $item->ambulatorio_laudo_id ?>');">
                                                         Download</a></div>
-                                            </td>
+                                            </td> -->
                                             <td class="<?php echo $estilo_linha; ?>" width="70px;">
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/listararquivos/" . $item->ambulatorio_laudo_id; ?> ', '_blank', 'width=800,height=600');">
