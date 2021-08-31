@@ -279,9 +279,9 @@ class Laudo extends BaseController {
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
 //        var_dump($empresa_upload); die;
         if ($empresa_upload != '') {
-            $caminho_arquivos = "$empresa_upload/consulta/paciente/$ambulatorio_laudo_id/";
+            $caminho_arquivos = "$empresa_upload/consulta/$ambulatorio_laudo_id/";
         } else {
-            $caminho_arquivos = base_url()."upload/consulta/paciente/$ambulatorio_laudo_id/";
+            $caminho_arquivos = base_url()."upload/consulta/$ambulatorio_laudo_id/";
         } 
          
        

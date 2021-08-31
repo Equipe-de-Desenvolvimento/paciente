@@ -36,7 +36,7 @@ class guia_model extends Model {
         return $return->result();
     }
 
-    function listarexames($paciente_id) {
+    function listarexames($paciente_id, $guia_id = 0) {
 
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
@@ -81,6 +81,9 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 't');
         $this->db->where('ag.tipo', 'EXAME');
         $this->db->where("ae.paciente_id", $paciente_id);
+        if($guia_id > 0){
+            $this->db->where("ae.guia_id", $guia_id);
+        }
         $this->db->orderby('ae.guia_id');
         $this->db->orderby('ae.agenda_exames_id');
         $return = $this->db->get();
