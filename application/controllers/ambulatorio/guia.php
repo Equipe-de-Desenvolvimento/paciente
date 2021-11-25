@@ -33,7 +33,18 @@ class Guia extends BaseController {
         $this->pesquisar();
     }
 
-    function pesquisar($paciente_id) {
+    function pesquisar($paciente_id) { 
+        if($this->session->userdata('paciente_id') != $paciente_id){
+            $mensagem_data = 'Ops, Você não tem acesso a essa pagina';
+            echo "<html>
+             <meta charset='UTF-8'>
+        <script type='text/javascript'>
+        alert('$mensagem_data');
+        location.href = '".base_url()."ambulatorio/guia/pesquisar/".$this->session->userdata('paciente_id')."';
+            </script>
+            </html>"; 
+        }
+
         $this->load->helper('directory');
         $data['exames'] = $this->guia->listarexames($paciente_id);
         $data['guia'] = $this->guia->listar($paciente_id);

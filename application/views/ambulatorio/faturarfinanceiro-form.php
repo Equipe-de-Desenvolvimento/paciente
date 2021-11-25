@@ -1,5 +1,6 @@
 <body bgcolor="#C0C0C0">
     <div class="content"> <!-- Inicio da DIV content -->
+
         <h3 class="singular">Faturar</h3>
         <div>
             <form name="form_faturar" id="form_faturar" action="<?= base_url() ?>ambulatorio/guia/gravarfaturadoguia" method="post">

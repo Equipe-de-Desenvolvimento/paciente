@@ -279,9 +279,9 @@ class Laudo extends BaseController {
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
 //        var_dump($empresa_upload); die;
         if ($empresa_upload != '') {
-            $caminho_arquivos = "$empresa_upload/consulta/$ambulatorio_laudo_id/";
+            $caminho_arquivos = "$empresa_upload/consulta/paciente/$ambulatorio_laudo_id/";
         } else {
-            $caminho_arquivos = base_url()."upload/consulta/$ambulatorio_laudo_id/";
+            $caminho_arquivos = base_url()."upload/consulta/paciente/$ambulatorio_laudo_id/";
         } 
          
        
@@ -634,6 +634,7 @@ class Laudo extends BaseController {
         if($data['laudo'][0]->template_obj != ''){
             $data['laudo'][0]->texto = $this->templateParaTexto($data['laudo'][0]->template_obj);
         }
+ 
         $texto = $data['laudo'][0]->texto;
         
         $adendo = $data['laudo'][0]->adendo;
@@ -836,6 +837,8 @@ class Laudo extends BaseController {
 //                    } else {
                     $cabecalho = "<table><tr><td>$cabecalho_config</td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_agenda_exames, 8, 2) . '/' . substr($data['laudo']['0']->data_agenda_exames, 5, 2) . '/' . substr($data['laudo']['0']->data_agenda_exames, 0, 4) . "</td></tr></table>";
 //                    }
+
+
                 } else {
 //                    if ($data['empresapermissoes'][0]->alterar_data_emissao == 't') {
                     $cabecalho = "<table><tr><td><img align = 'left'  width='180px' height='180px' src='img/humana.jpg'></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
@@ -1851,8 +1854,7 @@ class Laudo extends BaseController {
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
 
-
-
+ 
 
 //humana
         $this->carregarView($data, 'giah/servidor-form');

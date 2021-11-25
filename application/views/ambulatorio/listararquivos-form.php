@@ -24,8 +24,8 @@
                         foreach ($arquivo_pasta_pdf as $value) :
                             $i++;
                             ?> 
-                            <td width="10px"><img  width="50px" height="50px" onclick="javascript:window.open('<?= str_replace($pasta_sistema_paciente, $pasta_sistema, base_url()) . "upload/consulta/" . $ambulatorio_laudo_id . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" 
-                                src="<?= str_replace($pasta_sistema_paciente, $pasta_sistema, base_url()) . "upload/consulta/" . $ambulatorio_laudo_id . "/" . $value ?>">
+                            <td width="10px"><img  width="50px" height="50px" onclick="javascript:window.open('<?= str_replace($pasta_sistema_paciente, $pasta_sistema, base_url()) . "upload/consulta/paciente/" . $ambulatorio_laudo_id . "/" . $value ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" 
+                                src="<?= str_replace($pasta_sistema_paciente, $pasta_sistema, base_url()) . "upload/consulta/paciente/" . $ambulatorio_laudo_id . "/" . $value ?>">
                                 <br><? echo substr($value, 0, 10) ?><br>
                             </td>
                             <?

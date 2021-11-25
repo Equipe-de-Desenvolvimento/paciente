@@ -53,19 +53,6 @@
             <?
             foreach ($guia as $test) :
                 $guia_id = $test->ambulatorio_guia_id;
-                $examesguia = $this->guia->listarexames($paciente['0']->paciente_id, $test->ambulatorio_guia_id);
-                $pulaguia = 'true';
-                foreach($examesguia as $exames2){
-                       
-                        if($exames2->convenio != ''){
-                            $pulaguia = 'false';
-                        }
-
-                    }
-
-                    if($pulaguia == 'true'){
-                        continue;
-                    }
                 ?>
                 <table >
                     <thead>
@@ -86,7 +73,6 @@
                             // die;
                         // var_dump($urlClinica); die;
                         foreach ($exames as $item) :
-                            
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             if ($test->ambulatorio_guia_id == $item->guia_id) {
                                 ?>
@@ -97,48 +83,31 @@
 
                                     <? if ($item->situacao == "FINALIZADO") { ?>
                                         <?
-                                            if($urlCaminho != ''){
-                                                if (!is_dir($urlCaminho.'/laudopdf/'.$item->ambulatorio_laudo_id)) {
-                                                    mkdir($urlCaminho.'/laudopdf/'.$item->ambulatorio_laudo_id);
-                                                    $destino = $urlCaminho.'/laudopdf/'.$item->ambulatorio_laudo_id;
-                                                    chmod($destino, 0777);
-                                                }
-                                            }
-                                            
                                             $caminhoCompleto = $urlCaminho.'/laudopdf/'.$item->ambulatorio_laudo_id;
-                                            $arquivos = directory_map($caminhoCompleto);
-                                            // if ($arquivos == '') {
-                                            //     $arquivos = array();
-                                            // }
-                                            $nome_image = '';
-                                            $nome_laudo = '';
-
-                                            foreach($arquivos as $value){
-                                                
-                                                if(substr($value, 0, 8) == 'imagens_'){
-                                                    $nome_image = $value;
-                                                }else{
-                                                    $nome_laudo = $value;
+                                            $arquivos = directory_map($caminhoCompleto);  
+                                            if($arquivos != false){
+                                                foreach($arquivos as $value){ 
+                                                    if(substr($value, 0, 8) == 'imagens_'){
+                                                        $nome_image = $value;
+                                                    }else{
+                                                        $nome_laudo = $value;
+                                                    }
                                                 }
-                                            }
+                                            }  
                                         ?>
 
                                         <? if (@$empresa[0]->botao_laudo_paciente == 't') { ?>
-                                            <? if(isset($nome_laudo) && $nome_laudo != ''){?>
-                                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?=$urlClinica?>upload/laudopdf/<?= $item->ambulatorio_laudo_id ?>/<?=$nome_laudo?>');">
+                                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
                                                         Laudo</a></div>
-                                                </td>
-                                            <? } ?> 
+                                            </td>
                                         <? } ?>
 
                                         <? if (@$empresa[0]->botao_imagem_paciente == 't') { ?>
-                                            <? if(isset($nome_image) && $nome_image  != ''){?>
-                                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?=$urlClinica?>upload/laudopdf/<?= $item->ambulatorio_laudo_id ?>/<?=$nome_image?>');">
+                                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoimagem/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
                                                         Imagem</a></div>
-                                                </td>  
-                                            <? } ?>
+                                            </td>   
                                         <? } ?>
     
 

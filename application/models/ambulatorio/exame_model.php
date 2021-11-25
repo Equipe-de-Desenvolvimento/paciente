@@ -571,6 +571,8 @@ class exame_model extends Model {
         $data = date("Y-m-d");
         $contador = count($args);
         $paciente_id = $this->session->userdata('operador_id');
+        $paciente_id2 = $this->session->userdata('paciente_id');
+
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
                             ae.data,
@@ -614,8 +616,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
-        if ($contador == 0) {
-            
+        if ($contador == 0) { 
             $this->db->where('ae.data >=', $data);
         }
 //        $this->db->limit(5);
@@ -625,37 +626,43 @@ class exame_model extends Model {
         if ($this->session->userdata('login_paciente') == false) {
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
-                $this->db->where('ae.situacao', 'LIVRE');
+                $this->db->where("(ae.situacao = 'LIVRE' or ae.paciente_id = $paciente_id2 )");
                 $this->db->where('ae.bloqueado', 'f');
             }
 
             if (isset($args['cpf']) && strlen($args['cpf']) > 0) {
                 $this->db->where('p.cpf', str_replace("-", "", str_replace(".", "", $args['cpf'])));
+                $this->db->where("(ae.paciente_id = $paciente_id2)"); 
             } else {
                 $this->db->where('ae.situacao', 'LIVRE');
             }
             if (isset($args['data']) && strlen($args['data']) > 0) {
                 $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
-            }
+                $this->db->where("(ae.paciente_id = $paciente_id2)"); 
+            } 
+
         } else {
             $paciente_id = $this->session->userdata('operador_id');
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
-                 $this->db->where("(ae.situacao = 'LIVRE' or ae.paciente_id = $paciente_id )");
+                $this->db->where("(ae.situacao = 'LIVRE' or ae.paciente_id = $paciente_id )");
                 $this->db->where('ae.bloqueado', 'f');
-            }
-
-            
+            }  
             if (isset($args['data']) && strlen($args['data']) > 0) {
 //                var_dump(date("Y-m-d", strtotime(str_replace('/', '-', $args['data'])))); die;
                 $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+                $this->db->where("(ae.situacao = 'LIVRE' or ae.paciente_id = $paciente_id )");
             }
             if (isset($args['cpf']) && strlen($args['cpf']) > 0) {
                 $this->db->where('p.cpf', str_replace("-", "", str_replace(".", "", $args['cpf'])));
+                $this->db->where("(ae.paciente_id = $paciente_id2)");  
             } else {
                 $this->db->where("(ae.situacao = 'LIVRE' or ae.paciente_id = $paciente_id )");
             }
-        }
+        } 
+
+        $this->db->where("(ae.situacao = 'LIVRE' or ae.paciente_id = $paciente_id )");
+
 
         return $this->db;
     }
