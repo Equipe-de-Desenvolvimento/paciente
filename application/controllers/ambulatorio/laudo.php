@@ -1842,20 +1842,18 @@ class Laudo extends BaseController {
         if ($empresa_upload != '') {
             $caminho_arquivos = "$empresa_upload/$exame_id/";
         } else {
-            $caminho_arquivos = base_url()."upload/$exame_id/";
+            $caminho_arquivos = "/home/sisprod/projetos/clinica/upload/$exame_id/";
         }
         $verificador = $data['laudo']['0']->imagens;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
+        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
             sort($data['arquivo_pasta']);
         }
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-
  
-
 //humana
         $this->carregarView($data, 'giah/servidor-form');
         $filename = "laudo.pdf";
@@ -1894,6 +1892,7 @@ class Laudo extends BaseController {
         }
         pdf($html, $filename, $cabecalho, $rodape);
     }
+
 
     function carregarrevisao($ambulatorio_laudo_id, $exame_id, $paciente_id) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
