@@ -21,7 +21,7 @@ $z=0;
     if ($i <=2){
             ?>
     
-            <td width="30px"></td><td><a><img width="410px" height="410px" src="<?= base_url()."upload/" . $exame_id . "/" . $value ?>"><br><br></a></td>
+            <td width="30px"></td><td><a><img width="410px" height="410px" src="<?= "/home/sisprod/projetos/clinica/upload/" . $exame_id . "/" . $value ?>"><br><br></a></td>
             
             <?
     }
