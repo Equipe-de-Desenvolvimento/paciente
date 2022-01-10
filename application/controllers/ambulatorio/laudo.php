@@ -856,7 +856,7 @@ class Laudo extends BaseController {
                 }  
                 $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
                 pdf($html, $filename, $cabecalho, $rodape);
-                $this->load->View('ambulatorio/impressaolaudo_1', $data);
+                die(); 
             }
 
 
@@ -1000,6 +1000,7 @@ class Laudo extends BaseController {
                             </table>
                         ";
                 pdf($html, $filename, $cabecalho, $rodape_t, '', 0);
+                die();
             }
 
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1021,7 +1022,8 @@ class Laudo extends BaseController {
 
                 $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
                 pdf($html, $filename, $cabecalho, $rodape);
-                $this->load->View('ambulatorio/impressaolaudo_1', $data);
+                die();
+                // $this->load->View('ambulatorio/impressaolaudo_1', $data);
             }
 
             // //////////////////////////////////////////////////////////////////////////////////////////////////////////////       
@@ -1049,7 +1051,7 @@ class Laudo extends BaseController {
                     }
                 }
                 $html = $this->load->view('ambulatorio/impressaolaudo_1pacajus', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape);
+                pdf($html, $filename, $cabecalho, $rodape); die();
                 $this->load->View('ambulatorio/impressaolaudo_1pacajus', $data);
             }
 
@@ -1071,7 +1073,7 @@ class Laudo extends BaseController {
                 }
                 $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
                 $grupo = 'laboratorial';
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
+                pdf($html, $filename, $cabecalho, $rodape, $grupo); die();
                 $this->load->View('ambulatorio/impressaolaudo_1', $data);
             }
 
@@ -1107,7 +1109,7 @@ class Laudo extends BaseController {
                 }
                 $grupo = 'laboratorial';
                 $html = $this->load->view('ambulatorio/impressaolaudo_5', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
+                pdf($html, $filename, $cabecalho, $rodape, $grupo); die();
                 $this->load->View('ambulatorio/impressaolaudo_5', $data);
             }
 
@@ -1150,7 +1152,7 @@ class Laudo extends BaseController {
                 }
                 $grupo = 'laboratorial';
                 $html = $this->load->view('ambulatorio/impressaolaudo_8', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
+                pdf($html, $filename, $cabecalho, $rodape, $grupo); die();
                 $this->load->View('ambulatorio/impressaolaudo_8', $data);
             }
             //////////////////////////////////////////////////////////////////////////////////////////////
@@ -1224,7 +1226,7 @@ class Laudo extends BaseController {
                 }
                 $grupo = 'laboratorial';
                 $html = $this->load->view('ambulatorio/impressaolaudo_8', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
+                pdf($html, $filename, $cabecalho, $rodape, $grupo); die();
                 $this->load->View('ambulatorio/impressaolaudo_8', $data);
             }
 
@@ -1265,7 +1267,7 @@ class Laudo extends BaseController {
 
                 $html = $this->load->view('ambulatorio/impressaolaudo_5', $data, true);
 
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
+                pdf($html, $filename, $cabecalho, $rodape, $grupo);  die(); 
                 $this->load->View('ambulatorio/impressaolaudo_5', $data);
             }
             ///////////////////////////////////////////////////////////////////////////////////////////////        
@@ -1304,7 +1306,7 @@ class Laudo extends BaseController {
 
                 $grupo = 'laboratorial';
                 $html = $this->load->view('ambulatorio/impressaolaudo_6', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
+                pdf($html, $filename, $cabecalho, $rodape, $grupo);  die(); 
                 $this->load->View('ambulatorio/impressaolaudo_6', $data);
             }
 
@@ -1357,7 +1359,7 @@ class Laudo extends BaseController {
                 $filename = "laudo.pdf";
                 $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
                 pdf($html, $filename, $cabecalho, $rodape, $grupo, 9, $data['empresa'][0]->impressao_laudo);
-                $this->load->View('ambulatorio/impressaolaudo_2', $data);
+                die(); $this->load->View('ambulatorio/impressaolaudo_2', $data);
             }
             ///////////////////////////////////////////////////////////////////////////////////////////
             elseif ($data['empresa'][0]->impressao_laudo == 9) {//RONALDO BARREIRA FILIAL
@@ -1402,7 +1404,7 @@ class Laudo extends BaseController {
                 $grupo = $data['laudo']['0']->grupo;
                 $filename = "laudo.pdf";
                 $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
-                pdf($html, $filename, $cabecalho, $rodape, $grupo);
+                pdf($html, $filename, $cabecalho, $rodape, $grupo);  die(); 
                 $this->load->View('ambulatorio/impressaolaudo_2', $data);
             }
             //////////////////////////////////////////////////////////////////////////////       
@@ -1439,9 +1441,9 @@ class Laudo extends BaseController {
 
                 $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
                 if ($sem_margins == 't') {
-                    pdf($html, $filename, $cabecalho, $rodape, '', 0, 0, 0);
+                    pdf($html, $filename, $cabecalho, $rodape, '', 0, 0, 0);  die(); 
                 } else {
-                    pdf($html, $filename, $cabecalho, $rodape);
+                    pdf($html, $filename, $cabecalho, $rodape);  die(); 
                 }
                 $this->load->View('ambulatorio/impressaolaudo_1', $data);
             }
