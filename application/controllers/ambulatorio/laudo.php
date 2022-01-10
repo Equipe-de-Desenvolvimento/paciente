@@ -633,10 +633,9 @@ class Laudo extends BaseController {
         // var_dump($data['laudo'][0]->template_obj); die;
         if($data['laudo'][0]->template_obj != ''){
             $data['laudo'][0]->texto = $this->templateParaTexto($data['laudo'][0]->template_obj);
-        }
+        } 
  
-        $texto = $data['laudo'][0]->texto;
-        
+        $texto = $data['laudo'][0]->texto; 
         $adendo = $data['laudo'][0]->adendo;
         $data['laudo'][0]->texto = $texto . '<br>' . $adendo;
         $data['laudo'][0]->texto = str_replace("<!-- pagebreak -->", '<pagebreak>', $data['laudo'][0]->texto);
@@ -830,6 +829,7 @@ class Laudo extends BaseController {
             //////////////////////////////////////////////////////////////////////////////////////////////////
             if ($data['empresa'][0]->impressao_laudo == 1) {//HUMANA IMAGEM
                 $filename = "laudo.pdf";
+             
                 if ($data['empresa'][0]->cabecalho_config == 't') {
                     //                $cabecalho = $cabecalho_config; 
 //                    if ($data['empresapermissoes'][0]->alterar_data_emissao == 't') {
@@ -847,11 +847,13 @@ class Laudo extends BaseController {
 //                    }
                 }
 
+             
+
                 if ($data['empresa'][0]->rodape_config == 't') {
                     $rodape = $rodape_config;
                 } else {
                     $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'>";
-                }
+                }  
                 $html = $this->load->view('ambulatorio/impressaolaudo_1', $data, true);
                 pdf($html, $filename, $cabecalho, $rodape);
                 $this->load->View('ambulatorio/impressaolaudo_1', $data);
