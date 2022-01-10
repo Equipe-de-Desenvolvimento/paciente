@@ -813,13 +813,13 @@ class Laudo extends BaseController {
             if ($data['empresapermissoes'][0]->remove_margem_cabecalho_rodape == 't') {
                 $cabecalho = "<div style=' margin-left:7%;width:86%;'>".$cabecalho."</div>";
                 $rodape = "<div style=' margin-left:7%;width:86%;'>".$rodape."</div>"; 
-                pdf($html, $filename, $cabecalho, $rodape, '', 0, 0, 0); 
+                pdf($html, $filename, $cabecalho, $rodape, '', 0, 0, 0);  die();
             }else{
 
                 if ($sem_margins == 't') {
-                    pdf($html, $filename, $cabecalho, $rodape, '', 0, 0, 0);
+                    pdf($html, $filename, $cabecalho, $rodape, '', 0, 0, 0); die();
                 } else {
-                    pdf($html, $filename, $cabecalho, $rodape);
+                    pdf($html, $filename, $cabecalho, $rodape); die();
                 }
 
             }
