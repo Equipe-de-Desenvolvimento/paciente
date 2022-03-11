@@ -197,7 +197,7 @@
                                 if ($item->ambulatorio_laudo_id != "") {  
                                         ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                            <a target="_blank" href="<?= base_url() ?>ambulatorio/laudo/imagens/<?= $item->ambulatorio_laudo_id ?>">Arquivos
+                                            <a target="_blank" href="<?= base_url() ?>ambulatorio/laudo/imagens/<?= $item->ambulatorio_laudo_id ?>/<?= $this->session->userdata('paciente_id'); ?>">Arquivos
                                             </a></div>
                                 </td> 
                               <?php  }else{

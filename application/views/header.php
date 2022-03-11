@@ -126,7 +126,7 @@ function debug($object) {
 
                     <? $paciente_id = $this->session->userdata('operador_id'); ?>
                     <?php if($data['empresa'][0]->desativar_agendamento_paciente != "t"){?>
-                        <li><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/agendamento/<?= $paciente_id ?>">Agendamento</a></span></li>
+                        <li><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/agendamento/">Agendamento</a></span></li>
                     <?php }?>
                      <?php if($data['empresa'][0]->desativar_exame_paciente != "t"){?>
                     <li><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/pesquisar/<?= $paciente_id ?>">Exames</a></span></li>

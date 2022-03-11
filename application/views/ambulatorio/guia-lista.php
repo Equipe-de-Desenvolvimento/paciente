@@ -1,6 +1,4 @@
-
 <div class="content ficha_ceatox">
-
     <?
     $operador_id = $this->session->userdata('operador_id');
     ?>
@@ -25,25 +23,16 @@
                         ?>>Feminino</option>
                     </select>
                 </div>
-
                 <div>
-                    <label>Nascimento</label>
-
-
+                    <label>Nascimento</label>  
                     <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
                 </div>
-
-                <div>
-
+                <div> 
                     <label>Idade</label>
                     <input type="text" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= $paciente['0']->idade; ?>" readonly />
-
-                </div>
-
+                </div> 
                 <div>
-                    <label>Nome da M&atilde;e</label>
-
-
+                    <label>Nome da M&atilde;e</label>  
                     <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                 </div>
             </fieldset>
@@ -98,14 +87,14 @@
 
                                         <? if (@$empresa[0]->botao_laudo_paciente == 't') { ?>
                                             <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $paciente_id; ?>');">
                                                         Laudo</a></div>
                                             </td>
                                         <? } ?>
 
                                         <? if (@$empresa[0]->botao_imagem_paciente == 't') { ?>
                                             <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoimagem/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>');">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoimagem/<?= $item->ambulatorio_laudo_id ?>/<?= $item->exame_id ?>/<?= $paciente_id; ?>');">
                                                         Imagem</a></div>
                                             </td>   
                                         <? } ?>
@@ -123,7 +112,7 @@
                                             </td> -->
                                             <td class="<?php echo $estilo_linha; ?>" width="70px;">
                                                 <div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/listararquivos/" . $item->ambulatorio_laudo_id; ?> ', '_blank', 'width=800,height=600');">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/listararquivos/" . $item->ambulatorio_laudo_id."/".$paciente_id; ?> ', '_blank', 'width=800,height=600');">
                                                         Arquivos
                                                     </a> 
                                                 </div>

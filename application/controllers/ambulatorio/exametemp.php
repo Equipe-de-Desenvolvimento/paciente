@@ -233,10 +233,10 @@ class Exametemp extends BaseController {
     }
 
     function gravarpacienteexametemp($agenda_exames_id, $paciente_id) {
-            $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id, $paciente_id);
-            $data['mensagem'] = 'Sucesso ao agendar Paciente.';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "ambulatorio/guia/agendamento/$paciente_id");
+        $paciente_id = $this->exametemp->gravarpacienteexames($agenda_exames_id, $paciente_id);
+        $data['mensagem'] = 'Sucesso ao agendar Paciente.';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/guia/agendamento");
     }
 
     function gravarpacienteconsultatemp($agenda_exames_id) {

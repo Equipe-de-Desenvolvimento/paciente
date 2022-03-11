@@ -43,20 +43,34 @@ class Guia extends BaseController {
         location.href = '".base_url()."ambulatorio/guia/pesquisar/".$this->session->userdata('paciente_id')."';
             </script>
             </html>"; 
-        }
-
+        } 
         $this->load->helper('directory');
         $data['exames'] = $this->guia->listarexames($paciente_id);
         $data['guia'] = $this->guia->listar($paciente_id);
-        $data['empresa'] = $this->guia->listarempresapermissoes();
-        // echo '<pre>';
-        // var_dump($data['empresa']); 
-        // die;
+        $data['empresa'] = $this->guia->listarempresapermissoes(); 
         $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['paciente_id'] = $paciente_id;
         $this->loadView('ambulatorio/guia-lista', $data);
     }
 
-    function resultadoExamesLabLuz($guia_id, $paciente_id) {
+    function resultadoExamesLabLuz($guia_id, $paciente_id=0) {
+
+        if($this->session->userdata('paciente_id') != $paciente_id){   
+            $mensagem = "Ops, Você não tem acesso a essa pagina";
+            echo "<html>
+                   <meta charset='UTF-8'>
+       <script type='text/javascript'> 
+       alert('$mensagem');
+       window.onunload = fechaEstaAtualizaAntiga;
+       function fechaEstaAtualizaAntiga() {
+           window.opener.location.reload();
+           }
+       window.close();
+           </script>
+           </html>"; 
+           die(); 
+        }
+
         $empresa = $this->guia->listarempresa();
         $empresaP = $this->guia->listarempresapermissoes();
         $exames_procedimentos = $this->guia->listarexamesguialaboratorio($guia_id);
