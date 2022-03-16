@@ -274,22 +274,25 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/laudodigitador-form_1', $data);
     }
 
-    function listararquivos($ambulatorio_laudo_id=NULL,$paciente_id=0) {
-        if($this->session->userdata('paciente_id') != $paciente_id){   
-            $mensagem = "Ops, Você não tem acesso a essa pagina";
-            echo "<html>
-                   <meta charset='UTF-8'>
-       <script type='text/javascript'> 
-       alert('$mensagem');
-       window.onunload = fechaEstaAtualizaAntiga;
-       function fechaEstaAtualizaAntiga() {
-           window.opener.location.reload();
-           }
-       window.close();
-           </script>
-           </html>"; 
-           die(); 
-        }
+    function listararquivos($ambulatorio_laudo_id=NULL,$paciente_id=0) { 
+
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id); 
+        if($this->session->userdata('paciente_id') != $paciente_id || $this->session->userdata('paciente_id') != $data['laudo'][0]->paciente_id){   
+                $mensagem = "Ops, Você não tem acesso a essa pagina";
+                    echo "<html>
+                        <meta charset='UTF-8'>
+            <script type='text/javascript'> 
+            alert('$mensagem');
+            window.onunload = fechaEstaAtualizaAntiga;
+            function fechaEstaAtualizaAntiga() {
+                window.opener.location.reload();
+                }
+            window.close();
+                </script>
+                </html>"; 
+                die(); 
+        } 
+
         
         $this->load->helper('directory'); 
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
@@ -643,7 +646,12 @@ class Laudo extends BaseController {
 
 
     function impressaolaudo($ambulatorio_laudo_id, $exame_id,$paciente_id = 0) {
-        if($this->session->userdata('paciente_id') != $paciente_id){   
+      
+        $this->load->plugin('mpdf');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+
+        if($this->session->userdata('paciente_id') != $paciente_id || $this->session->userdata('paciente_id') != $data['laudo'][0]->paciente_id){   
             $mensagem = "Ops, Você não tem acesso a essa pagina";
             echo "<html>
                    <meta charset='UTF-8'>
@@ -657,11 +665,9 @@ class Laudo extends BaseController {
            </script>
            </html>"; 
            die(); 
-        }
+        } 
 
-        $this->load->plugin('mpdf');
-        $empresa_id = $this->session->userdata('empresa_id');
-        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+
         // var_dump($data['laudo'][0]->template_obj); die;
         if($data['laudo'][0]->template_obj != ''){
             $data['laudo'][0]->texto = $this->templateParaTexto($data['laudo'][0]->template_obj);
@@ -1869,18 +1875,11 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/impressaolaudoantigo', $data);
     }
 
-    function impressaoimagem($ambulatorio_laudo_id, $exame_id, $paciente_id=0) { 
-        
-    
-        if($this->session->userdata('paciente_id') != $paciente_id){  
-        //     $mensagem_data = 'Ops, Você não tem acesso a essa pagina'; 
-        //     echo "<html>
-        //      <meta charset='UTF-8'>
-        // <script type='text/javascript'>
-        // alert('$mensagem_data');
-        // location.href = '".base_url()."ambulatorio/guia/pesquisar/".$this->session->userdata('paciente_id')."';
-        //     </script>
-        //     </html>";
+    function impressaoimagem($ambulatorio_laudo_id, $exame_id, $paciente_id=0) {   
+        $this->load->plugin('mpdf');
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id); 
+
+        if($this->session->userdata('paciente_id') != $paciente_id || $this->session->userdata('paciente_id') != $data['laudo'][0]->paciente_id){   
             $mensagem = "Ops, Você não tem acesso a essa pagina";
             echo "<html>
                    <meta charset='UTF-8'>
@@ -1894,10 +1893,8 @@ class Laudo extends BaseController {
            </script>
            </html>"; 
            die(); 
-        } 
+        }  
 
-        $this->load->plugin('mpdf');
-        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
 //        var_dump($empresa_upload); die;
         if ($empresa_upload != '') {
@@ -2297,8 +2294,10 @@ class Laudo extends BaseController {
     }
 
     
-    function imagens($ambulatorio_laudo_id, $paciente_id= 0){
-        if($this->session->userdata('paciente_id') != $paciente_id){   
+    function imagens($ambulatorio_laudo_id, $paciente_id= 0){ 
+
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id); 
+        if($this->session->userdata('paciente_id') != $paciente_id || $this->session->userdata('paciente_id') != $data['laudo'][0]->paciente_id){   
             $mensagem = "Ops, Você não tem acesso a essa pagina";
             echo "<html>
                    <meta charset='UTF-8'>
@@ -2312,7 +2311,8 @@ class Laudo extends BaseController {
            </script>
            </html>"; 
            die(); 
-        }
+        } 
+
 
         $this->load->helper('directory');
         
@@ -2333,7 +2333,24 @@ class Laudo extends BaseController {
     
     function downloadarquivos($ambulatorio_laudo_id){
         $zip = new ZipArchive;
-        $this->load->helper('directory');
+        $this->load->helper('directory'); 
+
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id); 
+        if($this->session->userdata('paciente_id') != $data['laudo'][0]->paciente_id){   
+                $mensagem = "Ops, Você não tem acesso a essa pagina";
+                    echo "<html>
+                           <meta charset='UTF-8'>
+               <script type='text/javascript'> 
+               alert('$mensagem');
+               window.onunload = fechaEstaAtualizaAntiga;
+               function fechaEstaAtualizaAntiga() {
+                   window.opener.location.reload();
+                   }
+               window.close();
+                   </script>
+                   </html>"; 
+                   die(); 
+        }  
         
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
         if ($empresa_upload != '') {
