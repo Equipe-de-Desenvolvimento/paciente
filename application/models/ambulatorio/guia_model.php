@@ -4470,6 +4470,75 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
+
+    function certificadomedico($medico){
+        $this->db->select('certificado_digital');
+        $this->db->from('tb_operador');
+        $this->db->where('operador_id', $medico);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+
+    function listarempresasaladepermissao($empresa_id = null) {
+        if ($empresa_id == null) {
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
+
+        $this->db->select('e.empresa_id,
+                            ep.campos_atendimentomed,
+                            ep.dados_atendimentomed,
+                            ep.liberar_perfil,
+                            ep.cirugico_manual,
+                            ordem_chegada,
+                            oftamologia,
+                            horario_sab,
+                            atendimento_medico,
+                            horario_seg_sex,
+                            senha_finalizar_laudo,
+                            profissional_externo,
+                            profissional_agendar,
+                            desativar_personalizacao_impressao,
+                            informacao_adicional,
+                            desativar_taxa_administracao,
+                            retirar_flag_solicitante,
+                            ep.nao_sobrepor_laudo,
+                            ep.tabela_bpa,
+                            ep.convenio_padrao,
+                            ep.solicitar_sabin,
+                            ep.corretor_ortografico,
+                            ep.agendahias,
+                            ep.diagnostico_medico,
+                            ep.certificado_digital,
+                            ep.certificado_digital_manual,
+                            ep.modelos_atendimento,
+                            ep.abas_atendimento,
+                            ep.atendimento_medico_3,
+                            ep.laudo_sigiloso,
+                            ep.integracaosollis,
+                            e.horario_sab,
+                            e.horario_seg_sex,
+                            e.endereco_upload,
+                            e.telefone,
+                            e.celular,
+                            m.nome as municipio,
+                            e.numero,
+                            e.logradouro,
+                            e.instagram_empresa,
+                            e.facebook_empresa,
+                            e.site_empresa,
+                            ep.orcamento_preco_tcd');
+        $this->db->from('tb_empresa e');
+        $this->db->where('e.empresa_id', $empresa_id);
+        $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+        $this->db->join('tb_municipio m','m.municipio_id = e.municipio_id','left');
+        $this->db->orderby('e.empresa_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    
+
 }
 
 ?>

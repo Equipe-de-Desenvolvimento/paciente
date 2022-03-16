@@ -1018,7 +1018,8 @@ class laudo_model extends Model {
                             ag.nivel2_diagnostico,
                             ag.nivel3_diagnostico,
                             set.nome as setor,
-                            ae.observacoes");
+                            ae.observacoes,
+                            ae.empresa_id");
         $this->db->from('tb_ambulatorio_laudo ag');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');

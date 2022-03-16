@@ -439,4 +439,25 @@ class Operador_model extends BaseModel {
         }
     }
 
+
+    function medicocabecalhorodape($operador_id) {
+        $this->db->select('o.nome,
+                            o.operador_id,
+                            o.rodape,
+                            o.cabecalho,
+                            o.cabecalho2,
+                            o.rodape2,
+                            c.descricao as ocupacao,
+                            o.conselho,
+                            o.curriculo
+                            ');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+        $this->db->where('o.operador_id', $operador_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+
+
 }
