@@ -20,7 +20,7 @@ $z++;
     if ($i <=2){
             ?>
     
-            <td width="30px"></td><td><img  width="410px" height="360px" src="<?= "/home/sisprod/projetos/clinica/upload/" . $exame_id . "/" . $value ?>"></td>
+            <td width="30px"></td><td><img  width="410px" height="360px" src="<?= $caminho_arquivos . "/" . $value ?>"></td>
             
             <?
     }
@@ -30,7 +30,7 @@ $z++;
             </tr>
             <tr>
         
-        <td width="30px"></td><td colspan="3"><center><img  width="410px" height="360px" src="<?= "/home/sisprod/projetos/clinica/upload/" . $exame_id . "/" . $value ?>"></center></td>
+        <td width="30px"></td><td colspan="3"><center><img  width="410px" height="360px" src="<?= $caminho_arquivos . "/" . $value ?>"></center></td>
             </tr>
             <tr>
             <?

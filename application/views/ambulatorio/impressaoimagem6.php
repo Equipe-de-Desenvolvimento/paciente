@@ -1,10 +1,8 @@
         <table>
             <tr>
         
-    <?
-
-    $i = 0;
-
+    <? 
+    $i = 0; 
     if ($arquivo_pasta != false):
         foreach ($arquivo_pasta as $value) :
         
@@ -14,7 +12,7 @@
 $i++;
             ?>
     
-            <td width="30px"></td><td><img  width="410px" height="360px" src="<?= "/home/sisprod/projetos/clinica/upload/" . $exame_id . "/" . $value; ?>"></td>
+        <td width="30px"></td><td><img  width="410px" height="360px" src="<?= $caminho_arquivos. "/" . $value; ?>"></td>
             
             <?
 

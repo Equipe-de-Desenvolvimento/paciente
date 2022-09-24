@@ -7,7 +7,7 @@
             
                 ?>
                 <tr>
-                    <td><a><img  width="600px" height="500px" src="<?= "/home/sisprod/projetos/clinica/upload/" . $exame_id . "/" . $value ?>"></a></td>
+                    <td><a><img  width="600px" height="500px" src="<?= $caminho_arquivos . "/" . $value ?>"></a></td>
                 </tr>  
             
                 <?

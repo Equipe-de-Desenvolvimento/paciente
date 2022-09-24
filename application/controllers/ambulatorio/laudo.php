@@ -2152,8 +2152,9 @@ class Laudo extends BaseController {
 
     function impressaoimagem($ambulatorio_laudo_id, $exame_id, $paciente_id=0) {   
         $this->load->plugin('mpdf');
-        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id); 
 
+
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);  
         if($this->session->userdata('paciente_id') != $paciente_id || $this->session->userdata('paciente_id') != $data['laudo'][0]->paciente_id){   
             $mensagem = "Ops, Você não tem acesso a essa pagina";
             echo "<html>
@@ -2176,54 +2177,341 @@ class Laudo extends BaseController {
             $caminho_arquivos = "$empresa_upload/$exame_id/";
         } else {
             $caminho_arquivos = "/home/sisprod/projetos/clinica/upload/$exame_id/";
-        }
+        } 
+        $data['caminho_arquivos'] = $caminho_arquivos; 
+   
         $verificador = $data['laudo']['0']->imagens;
         $this->load->helper('directory');
-        $data['arquivo_pasta'] = directory_map("/home/sisprod/projetos/clinica/upload/$exame_id/");
-//        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
-        if ($data['arquivo_pasta'] != false) {
-            sort($data['arquivo_pasta']);
+        $data['arquivo_pasta'] = directory_map($caminho_arquivos);
+ 
+
+        $sort = $this->laudo->listarnomeimagem($exame_id); 
+        $sort_array = array();
+        for ($i = 0; $i < count($sort); $i++) {
+            if (substr($sort[$i]->nome, 0, 7) == 'Foto 10') {
+                $c = $i;
+                continue;
+            }
+
+            $sort_array[explode('.',$sort[$i]->ambulatorio_nome_endoscopia)[0]] = Array('nome' => $sort[$i]->nome , 'arquivo' => $sort[$i]->ambulatorio_nome_endoscopia);
+ 
         }
+        if (isset($c)) {
+            $sort_array[explode('.',$sort[$c]->ambulatorio_nome_endoscopia)[0]] = Array('nome' => $sort[$c]->nome , 'arquivo' => $sort[$c]->ambulatorio_nome_endoscopia);
+        }  
+        $data['nomeimagem'] = $sort_array;  
+  
+        $data['empresa'] = $this->guia->listarempresa();
+        
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($data['empresa'][0]->empresa_id);
+        $data['impressaolaudo'] = $this->guia->listarconfiguracaoimpressaolaudo($data['empresa'][0]->empresa_id);
+        $cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        $rodape_config = $data['cabecalho'][0]->rodape;
+        $verificador = $data['laudo']['0']->imagens;
+        $this->load->helper('directory');
+        $data['arquivo_pasta'] = directory_map($caminho_arquivos);
+
+        // print_r($data['arquivo_pasta']);
+        // die;
+        //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
+        if ($data['arquivo_pasta'] != false) {
+            // sort($data['arquivo_pasta']);
+            natcasesort($data['arquivo_pasta']);
+        }   
+
+
+       
         $data['exame_id'] = $exame_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $dataFuturo = date("Y-m-d");
+        $dataAtual = $data['laudo']['0']->nascimento;
+        $date_time = new DateTime($dataAtual);
+        $diff = $date_time->diff(new DateTime($dataFuturo));
+        $teste = $diff->format('%Ya %mm %dd'); 
  
-//humana
-        $this->carregarView($data, 'giah/servidor-form');
-        $filename = "laudo.pdf";
-        $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
-        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'>";
-        //CDC      
-//        $filename = "laudo.pdf";
-//        $cabecalho = "<table><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
-//        $rodape = "<table><tr><td>Rua Juiz Renato Silva, 20 - Papicu | Fone (85)3234-3907</td></tr></table>";
-        //clinica MAIS      
-//        $filename = "laudo.pdf";
-//        $cabecalho = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame: Dr(a). " . $data['laudo']['0']->procedimento . "</td></tr></table>";
-//        $rodape = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table>";
-//        
 
-        if ($verificador == 1) {
-            $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
-        }
-        if ($verificador == 2) {
-            $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
-        }
-        if ($verificador == 3) {
-            $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
-        }
-        if ($verificador == 4) {
-            $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
-        }
-        if ($verificador == 5) {
-            $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
-        }
-        if ($verificador == 6 || $verificador == "") {
+        if ($data['empresa'][0]->laudo_config == 't') {
+            if ($data['impressaolaudo'][0]->cabecalho == 't') {
+                if ($data['empresa'][0]->cabecalho_config == 't') {
+                    $cabecalho = "$cabecalho_config  <table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
+                } else {
+                    $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
+                }
+            }
+            $filename = "laudo.pdf";
+        // Coloquei essa parte para ficar funcionando igual a gastrosul.
+            $arrayCompleto = Array();
+                foreach($data['arquivo_pasta'] as $value){ 
+                    if(!isset($data['nomeimagem'][explode('.',$value)[0]]['nome'])){
+                        //$data['nomeimagem'][] = Array('nome' => "" , 'arquivo' => $value); 
+                    }  
+                }     
+                $naoordenado = Array();
+                $y = 1;
+                foreach($data['arquivo_pasta'] as $value){ 
+                    if(!isset($data['nomeimagem'][explode('.',$value)[0]]['nome'])){
+                        $naoordenado[$y] = $value;
+                        $y++;
+                    }  
+                }   
+                $data['arquivo_pasta_novo'] = Array();
+                foreach($data['arquivo_pasta'] as $key => $item){
+                    $data['arquivo_pasta_novo'][$key+1] = $item;
+                }
+  
+                $array_TESTE = Array();
+                for($j = 1; $j <= 10; $j++){  
+                    if(!isset($data['nomeimagem'][$j]['nome'])){
+                        $array_TESTE[$j] = $j;
+                    } 
+                }    
+                foreach($naoordenado as $key => $item){
+                    foreach($array_TESTE as $k => $v ){ 
+                        $data['nomeimagem'][$k] = Array('nome' => '', 'arquivo' => $item);
+                        unset($array_TESTE[$k]); 
+                        unset($naoordenado[$key]); 
+                        break;
+                    }  
+                } 
+                foreach($naoordenado as $item3){
+                    $data['nomeimagem'][] = Array('nome' => '', 'arquivo' => $item3);
+                } 
+                ksort($data['nomeimagem']);
+                // vai até aqui 
 
-            $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
+            if ($verificador == 1) {
+                $html = $this->load->view('ambulatorio/impressaoimagem1configuravel', $data, true);
+            }
+            if ($verificador == 2) {
+                $html = $this->load->view('ambulatorio/impressaoimagem2configuravel', $data, true);
+            }
+            if ($verificador == 3) {
+                $html = $this->load->view('ambulatorio/impressaoimagem3configuravel', $data, true);
+            }
+            if ($verificador == 4) {
+                $html = $this->load->view('ambulatorio/impressaoimagem4configuravel', $data, true);
+            }
+            if ($verificador == 5) {
+                $html = $this->load->view('ambulatorio/impressaoimagem5configuravel', $data, true);
+            }
+            if ($verificador == 6 || $verificador == "" || $verificador >= 7) {
 
-//            $this->load->View('ambulatorio/impressaoimagem6', $data);
+                $html = $this->load->view('ambulatorio/impressaoimagem6configuravel', $data, true);
+            } 
+          
+            if ($data['empresa'][0]->rodape_config == 't') {
+                $rodape = "$rodape_config";
+            } else {
+                $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+            }
+        } else {  
+
+            if ($data['empresa'][0]->impressao_tipo == 1) {//humana
+                $filename = "laudo.pdf";
+                $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
+                $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodapehumana.jpg'>";
+
+                if ($verificador == 1) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
+                }
+                if ($verificador == 2) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
+                }
+                if ($verificador == 3) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
+                }
+                if ($verificador == 4) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
+                }
+                if ($verificador == 5) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
+                }
+                if ($verificador == 6 || $verificador == "" || $verificador >= 7) {
+
+                    $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
+                }
+            }
+
+        /////////////////////////////////////////////////////////////////////////////////        
+            elseif ($data['empresa'][0]->impressao_tipo == 13) {//CAGE
+                $filename = "laudo.pdf";
+                if ($data['laudo']['0']->sexo == "F") {
+                    $SEXO = 'FEMININO';
+                } elseif ($data['laudo']['0']->sexo == "M") {
+                    $SEXO = 'MASCULINO';
+                } else {
+                    $SEXO = 'OUTROS';
+                }
+                $filename = "laudo.pdf";
+                $cabecalho = "<table>
+        
+                                                                                                                                                                                                        <tr>
+        </td><td width='430px'>Nome.:" . $data['laudo']['0']->paciente . "</td><td></td>
+        </tr>
+        <tr>
+          </td><td >Sexo:" . $SEXO . " Idade:" . substr($teste, 0, 2) . "</td><td></td>
+        </tr>
+        
+                                                                                                                                                                                                        </table>";
+                $rodape = "<div></div>";
+                $html = $this->load->view('ambulatorio/impressaoimagem6cage', $data, true);
+            }
+
+        ////////////////////////////////////////////////////////////////////////////////        
+            elseif ($data['empresa'][0]->impressao_tipo == 16) {//GASTROSUL
+
+                $arrayCompleto = Array();
+                foreach($data['arquivo_pasta'] as $value){ 
+                    if(!isset($data['nomeimagem'][explode('.',$value)[0]]['nome'])){
+                        //$data['nomeimagem'][] = Array('nome' => "" , 'arquivo' => $value); 
+                    }  
+                }     
+                $naoordenado = Array();
+                $y = 1;
+                foreach($data['arquivo_pasta'] as $value){ 
+                    if(!isset($data['nomeimagem'][explode('.',$value)[0]]['nome'])){
+                        $naoordenado[$y] = $value;
+                        $y++;
+                    }  
+                }   
+                $data['arquivo_pasta_novo'] = Array();
+                foreach($data['arquivo_pasta'] as $key => $item){
+                    $data['arquivo_pasta_novo'][$key+1] = $item;
+                }
+  
+                $array_TESTE = Array();
+                for($j = 1; $j <= 10; $j++){  
+                    if(!isset($data['nomeimagem'][$j]['nome'])){
+                        $array_TESTE[$j] = $j;
+                    } 
+                }  
+              
+                foreach($naoordenado as $key => $item){
+                    foreach($array_TESTE as $k => $v ){ 
+                        $data['nomeimagem'][$k] = Array('nome' => '', 'arquivo' => $item);
+                        unset($array_TESTE[$k]); 
+                        unset($naoordenado[$key]); 
+                        break;
+                    }  
+                } 
+                foreach($naoordenado as $item3){
+                    $data['nomeimagem'][] = Array('nome' => '', 'arquivo' => $item3);
+                } 
+                ksort($data['nomeimagem']);
+                
+                
+                
+
+                $filename = "laudo.pdf";
+                if ($data['laudo']['0']->sexo == "F") {
+                    $SEXO = 'FEMININO';
+                } elseif ($data['laudo']['0']->sexo == "M") {
+                    $SEXO = 'MASCULINO';
+                } else {
+                    $SEXO = 'OUTROS';
+                }
+                $filename = "laudo.pdf";
+                $cabecalho = "
+                <table>
+                    <tr>
+                        <td>Nome.:" . $data['laudo']['0']->paciente . "</td>
+                    </tr>
+                <table>";
+                $cabecalho = "<table>
+            
+                                                                                                                                                                                                        <tr>
+            </td><td width='100px'></td><td width='430px'>Nome.:" . $data['laudo']['0']->paciente . "</td><td></td>
+            </tr>
+            <tr>
+              </td><td width='100px'></td><td >Sexo:" . $SEXO . " Idade:" . substr($teste, 0, 2) . "</td><td></td>
+            </tr>
+            
+                                                                                                                                                                                                        </table>";
+                $rodape = "<div></div>"; 
+                
+                
+              
+                if ($verificador == 1) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem1gastrosul', $data, true);
+                }
+                if ($verificador == 2) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem2gastrosul', $data, true);
+                }
+                if ($verificador == 3) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem3gastrosul', $data, true);
+                }
+                if ($verificador == 4) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem4gastrosul', $data, true);
+                }
+                if ($verificador == 5) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem5gastrosul', $data, true);
+                }
+                if ($verificador == 6 || $verificador == "") {   
+                    $html = $this->load->view('ambulatorio/impressaoimagem6gastrosul', $data, true);
+                  
+                }
+                if ($verificador == 7) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem7gastrosul', $data, true);
+                }
+                if ($verificador == 8) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem8gastrosul', $data, true);
+                }
+                if ($verificador == 9) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem9gastrosul', $data, true);
+                }
+                if ($verificador === 0) { 
+                    $html = $this->load->view('ambulatorio/impressaoimagem10gastrosul', $data, true);
+                }   
+              
+
+            }
+
+            ////////////////////////////////////////////////////////////////////////////////        
+            elseif ($data['empresa'][0]->impressao_tipo == 10) {//CDC      
+                $filename = "laudo.pdf";
+                $cabecalho = "<table><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
+                $rodape = "<table><tr><td>Rua Juiz Renato Silva, 20 - Papicu | Fone (85)3234-3907</td></tr></table>";
+            }
+
+            ////////////////////////////////////////////////////////////////////////////////        
+            elseif ($data['empresa'][0]->impressao_tipo == 11) {//clinica MAIS      
+                $filename = "laudo.pdf";
+                $cabecalho = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame: Dr(a). " . $data['laudo']['0']->procedimento . "</td></tr></table>";
+                $rodape = "<table><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></table>";
+            }
+
+            ////////////////////////////////////////////////////////////////////////////////        
+            else {//GERAL  // este item deve ficar sempre por último
+                $filename = "laudo.pdf";
+                $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
+                $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+                if ($verificador == 1) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
+                }
+                if ($verificador == 2) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
+                }
+                if ($verificador == 3) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
+                }
+                if ($verificador == 4) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
+                }
+                if ($verificador == 5) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
+                }
+                if ($verificador == 6 || $verificador == "" || $verificador >= 7) {
+
+                    $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
+                }
+            }
         }
-        pdf($html, $filename, $cabecalho, $rodape);
+
+
+        $grupo = $data['laudo']['0']->grupo;
+        // echo $html;
+        pdf($html, $filename, $cabecalho, $rodape, $grupo);
     }
 
 

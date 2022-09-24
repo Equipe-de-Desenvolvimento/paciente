@@ -2272,6 +2272,17 @@ class laudo_model extends Model {
 
     }
 
+    function listarnomeimagem($exame_id) {
+
+        $this->db->select('nome,ambulatorio_nome_endoscopia');
+        $this->db->from('tb_ambulatorio_nome_endoscopia_imagem');
+        $this->db->where('exame_id', $exame_id);
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+
 }
 
 ?>
