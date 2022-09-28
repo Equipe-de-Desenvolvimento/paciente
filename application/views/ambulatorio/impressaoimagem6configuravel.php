@@ -1,3 +1,9 @@
+
+<style>
+@media print {
+  .break {page-break-after: always;}
+}
+</style>
 <?
 $b = 0;
 $i = 0;
@@ -30,12 +36,10 @@ if($b == 1){?>
     if($b == 6){
         $b = 0;
         ?><td colspan="2"><tr></table> 
-
         <? if($cont == count($nomeimagem)){ ?> 
         <?}else{?>
-             <h1 class="break"></h1>   
-        <?} ?>
-        
+            <table  class="break"><tr><td></td></tr></table>   
+        <?} ?> 
    <? }
     $y++; ?>
 <!-- 

@@ -2299,7 +2299,7 @@ class Laudo extends BaseController {
 
                 $html = $this->load->view('ambulatorio/impressaoimagem6configuravel', $data, true);
             } 
-          
+           
             if ($data['empresa'][0]->rodape_config == 't') {
                 $rodape = "$rodape_config";
             } else {
