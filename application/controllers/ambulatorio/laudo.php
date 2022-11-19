@@ -297,12 +297,17 @@ class Laudo extends BaseController {
         $this->load->helper('directory'); 
         $empresa_upload = $this->laudo->listarempresaenderecoupload();
 //        var_dump($empresa_upload); die;
+        // if ($empresa_upload != '') {
+        //     $caminho_arquivos = "$empresa_upload/consulta/paciente/$ambulatorio_laudo_id/";
+        // } else {
+        //     $caminho_arquivos = base_url()."upload/consulta/paciente/$ambulatorio_laudo_id/";
+        // } 
+
         if ($empresa_upload != '') {
-            $caminho_arquivos = "$empresa_upload/consulta/paciente/$ambulatorio_laudo_id/";
+            $caminho_arquivos = "$empresa_upload/consulta/$ambulatorio_laudo_id/";
         } else {
-            $caminho_arquivos = base_url()."upload/consulta/paciente/$ambulatorio_laudo_id/";
-        } 
-         
+            $caminho_arquivos = base_url()."upload/consulta/$ambulatorio_laudo_id/";
+        }  
        
         $empresa_upload_pasta = $this->laudo->listarempresaenderecouploadpasta();
 //        var_dump($empresa_upload_pasta); die;
@@ -348,8 +353,7 @@ class Laudo extends BaseController {
             </html>";
         }
         
-         
-         
+          
          
         $this->loadView('ambulatorio/listararquivos-form', $data);
     }
@@ -362,8 +366,7 @@ class Laudo extends BaseController {
             $caminho_arquivos = "$empresa_upload";
         } else {
             $caminho_arquivos = "/home/sisprod/projetos/clinica/upload";
-        }
-
+        } 
 
         $ambulatorio_laudo_id = $_POST['paciente_id'];
 
@@ -376,20 +379,30 @@ class Laudo extends BaseController {
 
             $_FILES['userfile']['name'] = str_replace(" ","_", $_FILES['userfile']['name']);
             
-             if (!is_dir("$caminho_arquivos/consulta/paciente/")) {
-                mkdir("$caminho_arquivos/consulta/paciente/");
-                $destino = "$caminho_arquivos/consulta/paciente/";
-                chmod($destino, 0777);
-            }
-            if (!is_dir("$caminho_arquivos/consulta/paciente/$ambulatorio_laudo_id")) {
-                mkdir("$caminho_arquivos/consulta/paciente/$ambulatorio_laudo_id");
-                $destino = "$caminho_arquivos/consulta/paciente/$ambulatorio_laudo_id";
-                chmod($destino, 0777);
-            }
+            //  if (!is_dir("$caminho_arquivos/consulta/paciente/")) {
+            //     mkdir("$caminho_arquivos/consulta/paciente/");
+            //     $destino = "$caminho_arquivos/consulta/paciente/";
+            //     chmod($destino, 0777);
+            // }
+            // if (!is_dir("$caminho_arquivos/consulta/paciente/$ambulatorio_laudo_id")) {
+            //     mkdir("$caminho_arquivos/consulta/paciente/$ambulatorio_laudo_id");
+            //     $destino = "$caminho_arquivos/consulta/paciente/$ambulatorio_laudo_id";
+            //     chmod($destino, 0777);
+            // }
              
+             if (!is_dir("$caminho_arquivos/consulta/")) {
+                mkdir("$caminho_arquivos/consulta/");
+                $destino = "$caminho_arquivos/consulta/";
+                chmod($destino, 0777);
+            }
+            if (!is_dir("$caminho_arquivos/consulta/$ambulatorio_laudo_id")) {
+                mkdir("$caminho_arquivos/consulta/$ambulatorio_laudo_id");
+                $destino = "$caminho_arquivos/consulta/$ambulatorio_laudo_id";
+                chmod($destino, 0777);
+            } 
 
             //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
-            $config['upload_path'] = "$caminho_arquivos/consulta/paciente/" . $ambulatorio_laudo_id . "/";
+            $config['upload_path'] = "$caminho_arquivos/consulta/" . $ambulatorio_laudo_id . "/";
             $config['allowed_types'] = 'gif|jpg|BMP|bmp|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar|xml|txt|';
             $config['max_size'] = '0';
             $config['overwrite'] = FALSE;
@@ -402,7 +415,7 @@ class Laudo extends BaseController {
                 $error = null;
                 $data = array('upload_data' => $this->upload->data());
                 $nome = $_FILES['userfile']['name'];
-                $this->laudo->gravaranexoarquivo($ambulatorio_laudo_id, "upload/consulta/paciente/$ambulatorio_laudo_id/$nome", $nome);
+                $this->laudo->gravaranexoarquivo($ambulatorio_laudo_id, "upload/consulta/$ambulatorio_laudo_id/$nome", $nome);
             }
         }
 //        var_dump($error); die;
