@@ -2282,6 +2282,21 @@ class laudo_model extends Model {
         return $return->result();
     }
 
+    function dadoslaudo($exame_id){
+        $this->db->select('agenda_exames_id');
+        $this->db->from('tb_exames');
+        $this->db->where('exames_id', $exame_id);
+        return $this->db->get()->result();
+    }
+
+    function listarpacs() {
+
+        $this->db->select('*');
+        $this->db->from('tb_pacs');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
 
 }
 

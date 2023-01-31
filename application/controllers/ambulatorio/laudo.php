@@ -2163,7 +2163,44 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/impressaolaudoantigo', $data);
     }
 
-    function impressaoimagem($ambulatorio_laudo_id, $exame_id, $paciente_id=0) {   
+    function impressaoimagem($ambulatorio_laudo_id, $exame_id){
+
+        // $dadosintegracao = $this->laudo->dadosintegracaoPACS();
+        $dadosintegracao = $this->laudo->listarpacs();
+        $dados = $this->laudo->dadoslaudo($exame_id);
+        
+        // $AN- variavel, com o accession number( numero do exame), obtida do sistema gestor da clinica;
+        $AN = $dados[0]->agenda_exames_id;
+        $IP = $dadosintegracao[0]->ip_externo;
+        // login que depende da clinica;
+        $login = $dadosintegracao[0]->login;
+        $password = $dadosintegracao[0]->senha;
+        // url de requisicao(GET)
+
+        if($IP != '' && $login != '' && $password != ''){
+            $url = "{$IP}/createlink?AccessionNumber={$AN}";
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL,$url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+            curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
+            $resultado = curl_exec($ch);
+            curl_close($ch);
+            // A variavel $resultado, comtem o link encriptado, que será usado no sistema do cliente, para ter acesso somente ao exame especificado no Acession Number
+            var_dump($resultado);
+
+            if(substr($resultado, 0,5) == 'ERROR'){
+                redirect(base_url().'ambulatorio/laudo/impressaoimagem_/'.$ambulatorio_laudo_id.'/'.$exame_id);
+            }else{
+                redirect($resultado);
+            }
+        }else{
+            redirect(base_url().'ambulatorio/laudo/impressaoimagem_/'.$ambulatorio_laudo_id.'/'.$exame_id);
+        }
+        
+    }
+
+    function impressaoimagem_($ambulatorio_laudo_id, $exame_id, $paciente_id=0) {   
         $this->load->plugin('mpdf');
 
 
