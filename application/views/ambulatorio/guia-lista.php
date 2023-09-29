@@ -119,7 +119,9 @@
                                             </td>  
                                         <? } ?>
 
-                                        <? if ($empresa[0]->endereco_integracao_lab != '') { ?>
+                                        <? 
+                                         
+                                        if ($empresa[0]->endereco_integracao_lab != '') { ?>
                                         <td  class="<?php echo $estilo_linha; ?>"> <!-- colpan = "6" -->
                                         <div class="bt_link">
                                             <a target="_blank" href='<?= base_url() . "ambulatorio/guia/resultadoExamesLabLuz/" . $guia_id . '/' . $paciente['0']->paciente_id; ?>'>

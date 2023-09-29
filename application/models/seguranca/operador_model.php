@@ -458,6 +458,13 @@ class Operador_model extends BaseModel {
         return $return->result();
     }
 
+    function operadoratualsistema($operador_id){
+        $this->db->select('');
+        $this->db->from('tb_operador');
+        $this->db->where('operador_id', $operador_id);
+        return $this->db->get()->result();
+    }
+
 
 
 }
